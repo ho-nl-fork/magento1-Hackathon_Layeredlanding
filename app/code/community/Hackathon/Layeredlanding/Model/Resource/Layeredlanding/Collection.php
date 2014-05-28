@@ -1,6 +1,7 @@
 <?php
  
-class Hackathon_Layeredlanding_Model_Mysql4_Layeredlanding_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
+    extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     public function _construct()
     {
