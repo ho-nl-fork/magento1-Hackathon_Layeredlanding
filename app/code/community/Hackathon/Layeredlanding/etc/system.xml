@@ -4,7 +4,7 @@
         <sitemap module="sitemap">
             <groups>
                 <landing translate="label">
-                    <label>Landingpage Options</label>
+                    <label>Landing Page Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>

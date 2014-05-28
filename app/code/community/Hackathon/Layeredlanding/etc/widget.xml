@@ -10,7 +10,7 @@
             <landingpage translate="label">
                 <required>1</required>
                 <visible>1</visible>
-                <label>Landingpage</label>
+                <label>Landing Page</label>
                 <type>select</type>
                 <source_model>layeredlanding/options_landingpages</source_model>
             </landingpage>

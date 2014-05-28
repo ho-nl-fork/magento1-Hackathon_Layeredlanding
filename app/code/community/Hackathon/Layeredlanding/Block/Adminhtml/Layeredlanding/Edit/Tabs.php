@@ -8,5 +8,6 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tabs extends 
         parent::__construct();
         $this->setId('layeredlanding_tabs');
         $this->setDestElementId('edit_form');
-        $this->setTitle(Mage::helper('layeredlanding')->__('Landingpage Information'));
+        $this->setTitle(Mage::helper('layeredlanding')->__('Landing Page Information'));
     }
+}

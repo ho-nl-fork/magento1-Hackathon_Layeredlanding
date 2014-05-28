@@ -9,11 +9,11 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
             ->_setActiveMenu('system/tools')
             ->_addBreadcrumb($this->__('Catalog'), $this->__('Catalog'))
             ->_addBreadcrumb($this->__('Attributes'), $this->__('Attributes'))
-			->_addBreadcrumb(Mage::helper('layeredlanding')->__('Landingpage Manager'), Mage::helper('layeredlanding')->__('Landingpage Manager'));
+			->_addBreadcrumb(Mage::helper('layeredlanding')->__('Landing {age Manager'), Mage::helper('layeredlanding')->__('Landingpage Manager'));
 
         $this->_title($this->__('Catalog'))
              ->_title($this->__('Attributes'))
-             ->_title(Mage::helper('layeredlanding')->__('Landingpage Manager'));
+             ->_title(Mage::helper('layeredlanding')->__('Landing Page Manager'));
 
 		return $this;
 	}   
@@ -35,7 +35,7 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 			$this->_initAction();
 			$this->renderLayout();
 		} else {
-			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('layeredlanding')->__('Landingpage does not exist'));
+			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('layeredlanding')->__('Landing Page does not exist'));
 			$this->_redirect('*/*/');
 		}
 	}
@@ -114,7 +114,7 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 				}
 				
 				// And wrap up the transaction
-				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('layeredlanding')->__('Landingpage was successfully saved'));
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('layeredlanding')->__('Landing Page was successfully saved'));
 				Mage::getSingleton('adminhtml/session')->setLayeredlandingData(false);
 
                 if ($this->getRequest()->getParam("back")) {
@@ -143,7 +143,7 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 				$model->setId($this->getRequest()->getParam('id'))
 					->delete();
 
-				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('layeredlanding')->__('Landingpage was successfully deleted'));
+				Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('layeredlanding')->__('Landing Page was successfully deleted'));
 				$this->_redirect('*/*/');
 			} catch (Exception $e) {
 				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());

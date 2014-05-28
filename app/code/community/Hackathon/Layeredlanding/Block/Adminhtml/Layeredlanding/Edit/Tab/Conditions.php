@@ -10,7 +10,7 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
         $this->setForm($form);
 		
         $fieldset = $form->addFieldset('layeredlanding_form', array(
-			'legend' => Mage::helper('layeredlanding')->__('Landingpage Conditions'),
+			'legend' => Mage::helper('layeredlanding')->__('Landing Page Conditions'),
 			'class' => 'fieldset-wide'
 		));
 

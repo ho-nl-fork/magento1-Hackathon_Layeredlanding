@@ -88,7 +88,7 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content
      */
     public function getTabLabel()
     {
-        return Mage::helper('layeredlanding')->__('Landingpage Content');
+        return Mage::helper('layeredlanding')->__('Content');
     }
 
     /**
@@ -98,7 +98,7 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content
      */
     public function getTabTitle()
     {
-        return Mage::helper('layeredlanding')->__('Landingpage Content');
+        return Mage::helper('layeredlanding')->__('Content');
     }
 
     /**

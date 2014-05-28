@@ -10,8 +10,8 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit extends Mage_
         $this->_blockGroup = 'layeredlanding';
         $this->_controller = 'adminhtml_layeredlanding';
  
-        $this->_updateButton('save', 'label', Mage::helper('layeredlanding')->__('Save Landingpage'));
-        $this->_updateButton('delete', 'label', Mage::helper('layeredlanding')->__('Delete Landingpage'));
+        $this->_updateButton('save', 'label', Mage::helper('layeredlanding')->__('Save Landing Page'));
+        $this->_updateButton('delete', 'label', Mage::helper('layeredlanding')->__('Delete Landing Page'));
 
         $this->_addButton(
             'saveandcontinue',
@@ -33,9 +33,9 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit extends Mage_
     public function getHeaderText()
     {
         if( Mage::registry('layeredlanding_data') && Mage::registry('layeredlanding_data')->getId() ) {
-            return Mage::helper('layeredlanding')->__("Edit Landingpage '%s'", $this->htmlEscape(Mage::registry('layeredlanding_data')->getPageTitle()));
+            return Mage::helper('layeredlanding')->__("Edit Landing Page '%s'", $this->htmlEscape(Mage::registry('layeredlanding_data')->getPageTitle()));
         } else {
-            return Mage::helper('layeredlanding')->__('Add Landingpage');
+            return Mage::helper('layeredlanding')->__('Add Landing Page');
         }
     }
 }
