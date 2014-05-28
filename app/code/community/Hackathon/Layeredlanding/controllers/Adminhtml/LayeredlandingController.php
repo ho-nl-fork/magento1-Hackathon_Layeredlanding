@@ -6,8 +6,15 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 	protected function _initAction()
 	{
 		$this->loadLayout()
-			->_setActiveMenu('catalog/attributes/layeredlanding')
+            ->_setActiveMenu('system/tools')
+            ->_addBreadcrumb($this->__('Catalog'), $this->__('Catalog'))
+            ->_addBreadcrumb($this->__('Attributes'), $this->__('Attributes'))
 			->_addBreadcrumb(Mage::helper('layeredlanding')->__('Landingpage Manager'), Mage::helper('layeredlanding')->__('Landingpage Manager'));
+
+        $this->_title($this->__('Catalog'))
+             ->_title($this->__('Attributes'))
+             ->_title(Mage::helper('layeredlanding')->__('Landingpage Manager'));
+
 		return $this;
 	}   
    
@@ -23,19 +30,9 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 		$layeredlandingModel	= Mage::getModel('layeredlanding/layeredlanding')->load($layeredlandingId);
 
 		if ($layeredlandingModel->getId() || $layeredlandingId == 0) {
-
 			Mage::register('layeredlanding_data', $layeredlandingModel);
 
-			$this->loadLayout();
-			$this->_setActiveMenu('layeredlanding/items');
-
-			$this->_addBreadcrumb(Mage::helper('layeredlanding')->__('Landingpage Manager'), Mage::helper('layeredlanding')->__('Landingpage Manager'));
-
-			$this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
-
-			$this->_addContent($this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit'))
-				->_addLeft($this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_tabs'));
-
+			$this->_initAction();
 			$this->renderLayout();
 		} else {
 			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('layeredlanding')->__('Landingpage does not exist'));

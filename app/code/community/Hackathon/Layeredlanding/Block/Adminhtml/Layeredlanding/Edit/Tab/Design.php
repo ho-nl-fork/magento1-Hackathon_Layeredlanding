@@ -1,6 +1,8 @@
 <?php
 
-class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Design extends Mage_Adminhtml_Block_Widget_Form
+class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Design
+    extends Mage_Adminhtml_Block_Widget_Form
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     protected function _prepareForm()
     {
@@ -50,12 +52,48 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Design ex
             $data = Mage::registry('layeredlanding_data')->getData();
         }
 
-        // modify multiselect values
-        $data['store_ids'] = explode(',', $data['store_ids']);
-        $data['category_ids'] = explode(',', $data['category_ids']);
-
         $form->setValues($data);
 
         return parent::_prepareForm();
+    }
+
+    /**
+     * Prepare label for tab
+     *
+     * @return string
+     */
+    public function getTabLabel()
+    {
+        return Mage::helper('layeredlanding')->__('Custom Design');
+    }
+
+    /**
+     * Prepare title for tab
+     *
+     * @return string
+     */
+    public function getTabTitle()
+    {
+        return Mage::helper('layeredlanding')->__('Custom Design');
+    }
+
+    /**
+     * Returns status flag about this tab can be shown or not
+     *
+     * @return true
+     */
+    public function canShowTab()
+    {
+        return true;
+    }
+
+    /**
+     * Returns status flag about this tab hidden or not
+     *
+     * @return true
+     */
+    public function isHidden()
+    {
+        return false;
     }
 }

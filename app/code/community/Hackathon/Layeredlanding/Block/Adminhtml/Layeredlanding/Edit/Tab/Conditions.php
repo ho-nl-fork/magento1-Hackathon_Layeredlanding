@@ -1,6 +1,8 @@
 <?php
 
-class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Conditions extends Mage_Adminhtml_Block_Widget_Form
+class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Conditions
+    extends Mage_Adminhtml_Block_Widget_Form
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
     protected function _prepareForm()
     {
@@ -63,12 +65,56 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
             $data = Mage::registry('layeredlanding_data')->getData();
         }
 
-        // modify multiselect values
-        $data['store_ids'] = explode(',', $data['store_ids']);
-        $data['category_ids'] = explode(',', $data['category_ids']);
+        if (isset($data['store_ids'])) {
+            $data['store_ids'] = explode(',', $data['store_ids']);
+        }
+        if (isset($data['category_ids'])) {
+            $data['category_ids'] = explode(',', $data['category_ids']);
+        }
 
         $form->setValues($data);
 
         return parent::_prepareForm();
+    }
+
+
+    /**
+     * Prepare label for tab
+     *
+     * @return string
+     */
+    public function getTabLabel()
+    {
+        return Mage::helper('layeredlanding')->__('Conditions');
+    }
+
+    /**
+     * Prepare title for tab
+     *
+     * @return string
+     */
+    public function getTabTitle()
+    {
+        return Mage::helper('layeredlanding')->__('Conditions');
+    }
+
+    /**
+     * Returns status flag about this tab can be shown or not
+     *
+     * @return true
+     */
+    public function canShowTab()
+    {
+        return true;
+    }
+
+    /**
+     * Returns status flag about this tab hidden or not
+     *
+     * @return true
+     */
+    public function isHidden()
+    {
+        return false;
     }
 }

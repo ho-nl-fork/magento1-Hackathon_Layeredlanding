@@ -1,7 +1,10 @@
 <?php
 
-class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content extends Mage_Adminhtml_Block_Widget_Form
+class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content
+    extends Mage_Adminhtml_Block_Widget_Form
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
+
 	protected function _prepareLayout()
     {
         $return = parent::_prepareLayout();
@@ -18,7 +21,7 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content e
         $this->setForm($form);
         
 		$fieldset = $form->addFieldset('layeredlanding_form', array(
-			'legend' => Mage::helper('layeredlanding')->__('Landingpage Content'),
+			'legend' => Mage::helper('layeredlanding')->__('Landing Page Content'),
 			'class' => 'fieldset-wide'
 		));
 
@@ -54,7 +57,6 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content e
 
         $fieldset->addField('meta_keywords', 'text', array(
 			'label' => Mage::helper('layeredlanding')->__('Meta keywords'),
-			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'meta_keywords',
 		));
@@ -74,12 +76,48 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content e
             $data = Mage::registry('layeredlanding_data')->getData();
         }
 
-        // modify multiselect values
-        $data['store_ids'] = explode(',', $data['store_ids']);
-        $data['category_ids'] = explode(',', $data['category_ids']);
-
         $form->setValues($data);
 
         return parent::_prepareForm();
+    }
+
+    /**
+     * Prepare label for tab
+     *
+     * @return string
+     */
+    public function getTabLabel()
+    {
+        return Mage::helper('layeredlanding')->__('Landingpage Content');
+    }
+
+    /**
+     * Prepare title for tab
+     *
+     * @return string
+     */
+    public function getTabTitle()
+    {
+        return Mage::helper('layeredlanding')->__('Landingpage Content');
+    }
+
+    /**
+     * Returns status flag about this tab can be shown or not
+     *
+     * @return true
+     */
+    public function canShowTab()
+    {
+        return true;
+    }
+
+    /**
+     * Returns status flag about this tab hidden or not
+     *
+     * @return true
+     */
+    public function isHidden()
+    {
+        return false;
     }
 }

@@ -15,6 +15,20 @@
 			<action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
 			<action method="addItem"><type>js_css</type><name>prototype/windows/themes/magento.css</name></action>
 		</reference>
+
+        <reference name="content">
+            <block type="layeredlanding/adminhtml_layeredlanding_edit" name="layeredlanding_edit"/>
+        </reference>
+        <reference name="left">
+            <block type="layeredlanding/adminhtml_layeredlanding_edit_tabs" name="layeredlanding_edit_tabs">
+                <block type="layeredlanding/adminhtml_layeredlanding_edit_tab_content"    name="layeredlanding_edit_tab_content" />
+                <block type="layeredlanding/adminhtml_layeredlanding_edit_tab_conditions" name="layeredlanding_edit_tab_conditions" />
+                <block type="layeredlanding/adminhtml_layeredlanding_edit_tab_design"     name="layeredlanding_edit_tab_design" />
+                <action method="addTab"><name>content_section</name><block>layeredlanding_edit_tab_content</block></action>
+                <action method="addTab"><name>conditions_section</name><block>layeredlanding_edit_tab_conditions</block></action>
+                <action method="addTab"><name>design_section</name><block>layeredlanding_edit_tab_design</block></action>
+            </block>
+        </reference>
 	</adminhtml_layeredlanding_edit>
     <layeredlanding_adminhtml_layeredlanding_index>
         <reference name="content">
