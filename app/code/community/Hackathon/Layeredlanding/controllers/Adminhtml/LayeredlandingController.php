@@ -56,6 +56,10 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 			Mage::register('layeredlanding_data', $layeredlandingModel);
 
 			$this->_initAction();
+            $title = Mage::helper('layeredlanding')->__("Edit Landing Page '%s'", $layeredlandingModel->getPageTitle());
+            $this->_addBreadcrumb($title, $title);
+            $this->_title($title);
+
 			$this->renderLayout();
 		} else {
 			Mage::getSingleton('adminhtml/session')->addError(Mage::helper('layeredlanding')->__('Landing Page does not exist'));

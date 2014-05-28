@@ -6,7 +6,7 @@
                 <attributes>
                     <children>
                         <layeredlanding module="layeredlanding">
-                            <title>Attribute landing pages</title>
+                            <title>Attribute Landing Pages</title>
                             <sort_order>99</sort_order>
                             <action>adminhtml/layeredlanding</action>
                         </layeredlanding>
@@ -27,7 +27,7 @@
                             <attributes>
                                 <children>
                                     <layeredlanding>
-                                        <title>Attribute landing pages</title>
+                                        <title>Attribute Landing Pages</title>
                                         <sort_order>99</sort_order>
                                     </layeredlanding>
                                 </children>
