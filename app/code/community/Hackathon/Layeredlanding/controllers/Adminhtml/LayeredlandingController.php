@@ -16,7 +16,30 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
              ->_title(Mage::helper('layeredlanding')->__('Landing Page Manager'));
 
 		return $this;
-	}   
+	}
+
+    /**
+     * @return Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Categories
+     */
+    protected function _getCategoryTreeBlock()
+    {
+        return $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_categories', '', array(
+            'id' => $this->getRequest()->getParam('uniq_id'),
+            'use_massaction' => $this->getRequest()->getParam('use_massaction', false)
+        ));
+    }
+
+    /**
+     * Categories tree node (Ajax version)
+     */
+    public function categoriesJsonAction()
+    {
+        if ($categoryId = (int) $this->getRequest()->getPost('id')) {
+            $this->getResponse()->setBody(
+                $this->_getCategoryTreeBlock()->getCategoryChildrenJson($categoryId)
+            );
+        }
+    }
    
 	public function indexAction() {
 		$this->_initAction();       
@@ -50,38 +73,30 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 		if ( $this->getRequest()->getPost() ) 
 		{
 			try {
-				$post_data = $this->getRequest()->getPost();
+				$postData = $this->getRequest()->getPost();
 				
-				$post_data['store_ids'] = implode(',', $post_data['store_ids']);
-				
-				$model = Mage::getModel('layeredlanding/layeredlanding');
-				
-				$model->setId($this->getRequest()->getParam('id'))
-					->setData('meta_title', $post_data['meta_title'])
-					->setData('meta_keywords', $post_data['meta_keywords'])
-					->setData('meta_description', $post_data['meta_description'])
-					->setData('page_title', $post_data['page_title'])
-					->setData('page_description', $post_data['page_description'])
-					->setData('page_url', $post_data['page_url'])
-					->setData('display_layered_navigation', $post_data['display_layered_navigation'])
-                    ->setData('display_in_top_navigation', $post_data['display_in_top_navigation'])
-					->setData('custom_layout_template', $post_data['custom_layout_template'])
-					->setData('custom_layout_update', $post_data['custom_layout_update'])
-					->setData('store_ids', $post_data['store_ids'])
-					->setData('category_ids', (int)$post_data['category_ids']);
+				$postData['store_ids'] = implode(',', $postData['store_ids']);
 
+                /** @var Hackathon_Layeredlanding_Model_Layeredlanding $model */
+				$model = Mage::getModel('layeredlanding/layeredlanding');
+                if ($id = $this->getRequest()->getParam('id')) {
+                    $model->load($id);
+                    if (! $model->getId()) {
+                        Mage::throwException(Mage::helper('layeredlanding')->__('Could not save Landing Page, does not exist'));
+                    }
+                }
+                $model->addData($postData);
 				$model->save();
 				
-				
-				$attributelanding_id = $model->getId();
+				$layeredLandingId = $model->getId();
 				
 				// save opening hours
-				if (isset($post_data['attributes']))
+				if (isset($postData['attributes']))
 				{
-					foreach ($post_data['attributes']['delete'] as $_key => $_row)
+					foreach ($postData['attributes']['delete'] as $_key => $_row)
 					{
 						$delete = (int)$_row;
-						$object_data = $post_data['attributes']['value'][$_key];
+						$object_data = $postData['attributes']['value'][$_key];
 						
 						$attributes_object = Mage::getModel('layeredlanding/attributes')->load((int)$object_data['id']);
 						
@@ -104,7 +119,7 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 
 						if (!$delete && $can_save) // save if not deleted and data checks out
 						{
-							$attributes_object->setData('layeredlanding_id', $attributelanding_id);
+							$attributes_object->setData('layeredlanding_id', $layeredLandingId);
 							$attributes_object->setData('attribute_id', $object_data['attribute']);
 							$attributes_object->setData('value', $object_data['value']);
 							

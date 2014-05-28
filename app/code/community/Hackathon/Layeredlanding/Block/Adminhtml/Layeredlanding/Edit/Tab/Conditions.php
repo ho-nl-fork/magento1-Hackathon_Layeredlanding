@@ -8,20 +8,45 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
     {
         $form = new Varien_Data_Form();
         $this->setForm($form);
+
+        if (Mage::getSingleton('adminhtml/session')->getLayeredlandingData()) {
+            $data = Mage::getSingleton('adminhtml/session')->getLayeredlandingData();
+            Mage::getSingleton('adminhtml/session')->setLayeredlandingData(null);
+        } elseif (Mage::registry('layeredlanding_data')) {
+            $data = Mage::registry('layeredlanding_data')->getData();
+        }
 		
         $fieldset = $form->addFieldset('layeredlanding_form', array(
 			'legend' => Mage::helper('layeredlanding')->__('Landing Page Conditions'),
 			'class' => 'fieldset-wide'
 		));
 
-        $fieldset->addField('category_ids', 'select', array(
+        /** @var Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Categories $categoriesRenderer */
+        $categoriesRenderer = $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_categories');
+
+        $categoryField = $fieldset->addField('category_ids', 'text', array(
 			'label' => Mage::helper('layeredlanding')->__('Categories'),
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'category_ids',
 			'onchange' => '_estimate_product_count();',
-			'values' => Mage::getSingleton('layeredlanding/options_categories')->toOptionArray(),
 		));
+
+        $jsObject = $categoriesRenderer->getJsFormObject();
+        $script = <<<JS
+<script>
+$jsObject = {};
+var categoryInput = $('category_ids');
+$jsObject.updateElement = categoryInput;
+</script>
+JS;
+
+        if (isset($data['category_ids'])) {
+            $categoriesRenderer->setCategoryIds(explode(',', $data['category_ids']));
+        }
+
+        $categoryField->setData('after_element_html',
+            $script . $categoriesRenderer->toHtml());
 
         /**
          * Check is single store mode
@@ -50,27 +75,14 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
 			'name' => 'attributes',
 			'label' => Mage::helper('layeredlanding')->__('Attributes'),
 			'required' => false,
-		));
-
-        $attributes = $form->getElement('attributes');
-
-        $attributes->setRenderer(
+		))->setRenderer(
             $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_attributes')
         );
-
-        if (Mage::getSingleton('adminhtml/session')->getLayeredlandingData()) {
-            $data = Mage::getSingleton('adminhtml/session')->getLayeredlandingData();
-            Mage::getSingleton('adminhtml/session')->setLayeredlandingData(null);
-        } elseif (Mage::registry('layeredlanding_data')) {
-            $data = Mage::registry('layeredlanding_data')->getData();
-        }
 
         if (isset($data['store_ids'])) {
             $data['store_ids'] = explode(',', $data['store_ids']);
         }
-        if (isset($data['category_ids'])) {
-            $data['category_ids'] = explode(',', $data['category_ids']);
-        }
+
 
         $form->setValues($data);
 
