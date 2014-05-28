@@ -4,6 +4,7 @@ class Hackathon_Layeredlanding_Model_Options_Landingpages
 {
     public function toOptionArray()
     {
+        throw new Exception('todo store ids');
 		$collection = Mage::getModel('layeredlanding/layeredlanding')->getCollection()
 			->addFieldToSelect('layeredlanding_id')
 			->addFieldToSelect('store_ids')

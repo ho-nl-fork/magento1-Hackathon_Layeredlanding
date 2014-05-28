@@ -24,11 +24,11 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
         /** @var Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Categories $categoriesRenderer */
         $categoriesRenderer = $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_categories');
 
-        $categoryField = $fieldset->addField('category_ids', 'text', array(
+        $categoryField = $fieldset->addField('category_id', 'text', array(
 			'label' => Mage::helper('layeredlanding')->__('Categories'),
 			'class' => 'required-entry',
 			'required' => true,
-			'name' => 'category_ids',
+			'name' => 'category_id',
 			'onchange' => '_estimate_product_count();',
 		));
 
@@ -36,13 +36,14 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
         $script = <<<JS
 <script>
 $jsObject = {};
-var categoryInput = $('category_ids');
+var categoryInput = $('category_id');
 $jsObject.updateElement = categoryInput;
 </script>
 JS;
 
-        if (isset($data['category_ids'])) {
-            $categoriesRenderer->setCategoryIds(explode(',', $data['category_ids']));
+        if (isset($data['category_id'])) {
+            $categoriesRenderer->setCategoryIds($data['category_id']);
+            $data['category_id'] = implode(',', $data['category_id']);
         }
 
         $categoryField->setData('after_element_html',
@@ -52,8 +53,8 @@ JS;
          * Check is single store mode
          */
         if (!Mage::app()->isSingleStoreMode()) {
-            $field = $fieldset->addField('store_ids', 'multiselect', array(
-				'name' => 'store_ids',
+            $field = $fieldset->addField('store_id', 'multiselect', array(
+				'name' => 'store_id',
 				'label' => Mage::helper('cms')->__('Store View'),
 				'title' => Mage::helper('cms')->__('Store View'),
 				'required' => true,
@@ -64,8 +65,8 @@ JS;
             $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
             $field->setRenderer($renderer);
         } else {
-            $fieldset->addField('store_ids', 'hidden', array(
-				'name' => 'store_ids',
+            $fieldset->addField('store_id', 'hidden', array(
+				'name' => 'store_id',
 				'value' => Mage::app()->getStore(true)->getId(),
 				'onchange' => '_estimate_product_count();',
 			));
@@ -78,11 +79,6 @@ JS;
 		))->setRenderer(
             $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_attributes')
         );
-
-        if (isset($data['store_ids'])) {
-            $data['store_ids'] = explode(',', $data['store_ids']);
-        }
-
 
         $form->setValues($data);
 

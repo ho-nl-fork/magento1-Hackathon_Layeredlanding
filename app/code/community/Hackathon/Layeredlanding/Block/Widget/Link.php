@@ -19,7 +19,7 @@ class Hackathon_Layeredlanding_Block_Widget_Link extends Mage_Core_Block_Abstrac
 		// test validity
 		if (is_null($landingpage->getId())) return ''; // landingpage does not exist
 		
-		$stores = explode(',', $landingpage->getData('store_ids'));
+		$stores = $landingpage->getData('store_id');
 		if (!in_array(Mage::app()->getStore()->getId(), $stores)) return ''; // landingpage not present on this store
 		
 		// create link

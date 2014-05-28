@@ -37,7 +37,7 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Attr
 
         $html = '';
 		
-		if (!$active_id) $html = '<option value="">-- select --</option>'; // no selection yet
+		if (!$active_id) $html = '<option value="">'.Mage::helper('adminhtml')->__('-- Please Select --').'</option>'; // no selection yet
 
 		foreach ($attributes as $attribute)
 		{
@@ -48,22 +48,20 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Attr
 		
 		return $html;
 	}
-	
-	/**
+
+
+    /**
      * Get select options for values dropdown
      *
-     * @param int $attribute_id
-     * @param int $option_id
+     * @param int $attributeId
+     * @param int $optionId
+     * @param     $inputName
      * @return string
-	 */ 
-	public function getValueOptions($attribute_id = 0, $option_id = 0, $input_name)
+     */
+	public function getValueOptions($attributeId = 0, $optionId = 0, $inputName)
 	{
-		$store_ids = Mage::registry('layeredlanding_data')->getStoreIds();
-		if (explode(',', $store_ids) > 1) // if more than 1 store just use system level
-		{
-			$store_ids = 0;
-		}
-		
-		return Mage::getModel('layeredlanding/attributes')->getGridOptionsHtml($attribute_id, $store_ids, $option_id, $input_name);
+        $storeIds = Mage::registry('layeredlanding_data')->getStoreId();
+
+		return Mage::getModel('layeredlanding/attributes')->getGridOptionsHtml($attributeId, $storeIds, $optionId, $inputName);
 	}
 }

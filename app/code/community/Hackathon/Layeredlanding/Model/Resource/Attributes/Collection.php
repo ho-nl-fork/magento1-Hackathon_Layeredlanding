@@ -5,7 +5,6 @@ class Hackathon_Layeredlanding_Model_Resource_Attributes_Collection
 {
     public function _construct()
     {
-        //parent::__construct();
         $this->_init('layeredlanding/attributes');
     }
 }

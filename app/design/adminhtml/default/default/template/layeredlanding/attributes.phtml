@@ -58,7 +58,7 @@ function _update_value_select(elm)
 	var target = $('value_select_' + id);
 	
 	var attributeid = $(elm).value;
-    var storeid = $('store_ids').value;
+    var storeid = $('store_id').value;
 	var inputname = target.readAttribute('rel');
 	
 	var querystring = $H({
@@ -86,7 +86,7 @@ function _estimate_product_count()
 	
 	 queryarray["category"] = $('category_ids').getValue();
 	 queryarray["store"] = '';
-	 $('store_ids').select('option[selected]').each(function(opt, i){
+	 $('store_id').select('option[selected]').each(function(opt, i){
 		var optval = parseInt($(opt).readAttribute('value'));
 		if (optval == 0) return;
 		

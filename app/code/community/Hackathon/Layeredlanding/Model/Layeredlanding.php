@@ -23,6 +23,7 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
 
     public function loadByUrl($url)
     {
+        throw new Exception('todo');
         $collection = $this->getCollection()
             ->addFieldToSelect('layeredlanding_id')
             ->addFieldToSelect('store_ids')

@@ -34,24 +34,46 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Grid extends Mage_
             'align'     => 'left',
             'index'     => 'page_title',
         ));
- 
-        $this->addColumn('category_ids', array(
+
+        $this->addColumn('category_id', array(
             'header'    => Mage::helper('layeredlanding')->__('Categories'),
             'align'     => 'left',
-            'index'     => 'category_ids',
+            'index'     => 'category_id',
             'width'     => '200px',
-			'renderer'  => 'Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Renderers_Categoryids',
+            'filter'    => false,
+            'sortable'  => false,
+			'renderer'  => 'layeredlanding/adminhtml_layeredlanding_grid_renderer_category',
         ));
- 
-        $this->addColumn('store_ids', array(
-            'header'    => Mage::helper('layeredlanding')->__('Stores'),
-            'align'     => 'left',
-            'index'     => 'store_ids',
-            'width'     => '200px',
-			'renderer'  => 'Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Renderers_Storeids',
-        ));
+
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('store_id', array(
+                'header'        => Mage::helper('cms')->__('Store View'),
+                'index'         => 'store_id',
+                'type'          => 'store',
+                'store_all'     => true,
+                'store_view'    => true,
+                'sortable'      => false,
+                'filter_condition_callback'
+                                => array($this, '_filterStoreCondition'),
+            ));
+        }
  
         return parent::_prepareColumns();
+    }
+
+    protected function _afterLoadCollection()
+    {
+        $this->getCollection()->walk('afterLoad');
+        parent::_afterLoadCollection();
+    }
+
+    protected function _filterStoreCondition($collection, $column)
+    {
+        if (!$value = $column->getFilter()->getValue()) {
+            return;
+        }
+
+        $this->getCollection()->addStoreFilter($value);
     }
  
     public function getRowUrl($row)

@@ -8,21 +8,23 @@ class Hackathon_Layeredlanding_Model_Attributes extends Mage_Core_Model_Abstract
         $this->_init('layeredlanding/attributes');
     }
 	
-	public function getGridOptionsHtml($attribute_id = 0, $store_id = 0, $option_id = 0, $input_name)
+	public function getGridOptionsHtml($attributeId = 0, $storeId = 0, $optionId = 0, $inputName)
 	{
-		$attribute = Mage::getModel('eav/entity_attribute')->load((int)$attribute_id);
+		$attribute = Mage::getModel('eav/entity_attribute')->load((int)$attributeId);
 		
         if ($attribute->getId() && in_array($attribute->getData('frontend_input'), array('select','multiselect')))
 		{
-            $options = Mage::getResourceModel('eav/entity_attribute_option_collection');
-            $options = $options->setAttributeFilter($attribute_id)->setStoreFilter($store_id)->toOptionArray();
+            $optionCollection = Mage::getResourceModel('eav/entity_attribute_option_collection');
+            $optionCollection->setAttributeFilter($attributeId);
+            $optionCollection->setStoreFilter(0);
+            $options = $optionCollection->toOptionArray();
 			
-            $html = '<select name="'.$input_name.'" class="input-select attribute-value" onchange="_estimate_product_count();">';
-            $html .= '<option value="">-- select --</option>';
+            $html = '<select name="'.$inputName.'" class="input-select attribute-value" onchange="_estimate_product_count();">';
+            $html .= '<option value="">'.Mage::helper('adminhtml')->__('-- Please Select --').'</option>';
 
             foreach ($options as $option)
             {
-				$selected = ((int)$option['value'] == (int)$option_id) ? 'selected ' : '' ;
+				$selected = ((int)$option['value'] == (int)$optionId) ? 'selected ' : '' ;
                 $html .= '<option '.$selected.'value="' . $option['value'] . '">' . $option['label'] . '</option>';
             }
 			
@@ -30,7 +32,7 @@ class Hackathon_Layeredlanding_Model_Attributes extends Mage_Core_Model_Abstract
         }
 		else
 		{
-			return '<input type="text" name="'.$input_name.'" onchange="_estimate_product_count();" class="input-text required-input attribute-value" value="'.$option_id.'"/>';
+			return '<input type="text" name="'.$inputName.'" onchange="_estimate_product_count();" class="input-text required-input attribute-value" value="'.$optionId.'"/>';
 		}
 	}
 }
