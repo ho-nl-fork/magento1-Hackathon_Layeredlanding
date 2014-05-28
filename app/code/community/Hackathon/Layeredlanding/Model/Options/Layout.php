@@ -3,7 +3,7 @@
 class Hackathon_Layeredlanding_Model_Options_Layout extends Mage_Page_Model_Source_Layout
 {
 
-    public function toOptionArray()
+    public function toOptionArray($withEmpty = false)
     {
         $options = parent::toOptionArray();
 		
