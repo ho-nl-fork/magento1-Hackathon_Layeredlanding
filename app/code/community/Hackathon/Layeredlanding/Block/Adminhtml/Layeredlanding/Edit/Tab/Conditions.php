@@ -36,7 +36,8 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
         $script = <<<JS
 <script>
 $jsObject = {};
-var categoryInput = $('category_id');
+var categoryInput = $('category_id')
+categoryInput.setAttribute('type','hidden');;
 $jsObject.updateElement = categoryInput;
 </script>
 JS;

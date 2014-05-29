@@ -26,21 +26,24 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content
 		));
 
         $fieldset->addField('page_url', 'text', array(
-			'label' => Mage::helper('layeredlanding')->__('Page URL'),
+			'label' => Mage::helper('cms')->__('URL Key'),
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'page_url',
+            'after_element_html' => '<p class="note">' .
+                Mage::helper('cms')->__('Relative to Website Base URL') . '</p>'
 		));
 
+
         $fieldset->addField('page_title', 'text', array(
-			'label' => Mage::helper('layeredlanding')->__('Page title'),
+			'label' => Mage::helper('cms')->__('Content Heading'),
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'page_title',
 		));
 
         $fieldset->addField('page_description', 'editor', array(
-			'label' => Mage::helper('layeredlanding')->__('Page description'),
+			'label' => Mage::helper('cms')->__('Content'),
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'page_description',
@@ -49,20 +52,19 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Content
 		));
 
         $fieldset->addField('meta_title', 'text', array(
-			'label' => Mage::helper('layeredlanding')->__('Meta title'),
+			'label' => Mage::helper('cms')->__('Page Title'),
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'meta_title',
 		));
 
         $fieldset->addField('meta_keywords', 'text', array(
-			'label' => Mage::helper('layeredlanding')->__('Meta keywords'),
-			'required' => true,
+			'label' => Mage::helper('cms')->__('Meta Keywords'),
 			'name' => 'meta_keywords',
 		));
 
         $fieldset->addField('meta_description', 'textarea', array(
-			'label' => Mage::helper('layeredlanding')->__('Meta description'),
+			'label' => Mage::helper('cms')->__('Meta Description'),
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'meta_description',
