@@ -60,6 +60,18 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Cate
         return $this;
     }
 
+    public function getLoadTreeUrl($expanded=null)
+    {
+        $params = array('_current'=>true, 'id'=>null,'store'=>null);
+        if (
+            (is_null($expanded) && Mage::getSingleton('admin/session')->getIsTreeWasExpanded())
+            || $expanded == true) {
+            $params['expand_all'] = true;
+        }
+        $params['layeredlanding_id'] = $this->getLayeredlandingId();
+        return $this->getUrl('*/*/categoriesJson', $params);
+    }
+
 
     /**
      * @param array|Varien_Data_Tree_Node $node
@@ -86,7 +98,6 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Cate
      */
     public function getCategoryChildrenJson($categoryId)
     {
-        $this->setCategoryIds($categoryId);
         $node = $this->getRoot()->getTree()->getNodeById($categoryId);
 
         if (!$node || !$node->hasChildren()) {

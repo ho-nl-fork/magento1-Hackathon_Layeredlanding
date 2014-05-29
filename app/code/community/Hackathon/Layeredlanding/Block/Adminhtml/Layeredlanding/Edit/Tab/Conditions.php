@@ -45,6 +45,7 @@ JS;
             $categoriesRenderer->setCategoryIds($data['category_id']);
             $data['category_id'] = implode(',', $data['category_id']);
         }
+        $categoriesRenderer->setLayeredlandingId($data['layeredlanding_id']);
 
         $categoryField->setData('after_element_html',
             $script . $categoriesRenderer->toHtml());

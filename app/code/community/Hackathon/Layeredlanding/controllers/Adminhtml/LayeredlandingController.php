@@ -18,16 +18,7 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 		return $this;
 	}
 
-    /**
-     * @return Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Categories
-     */
-    protected function _getCategoryTreeBlock()
-    {
-        return $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_categories', '', array(
-            'id' => $this->getRequest()->getParam('uniq_id'),
-            'use_massaction' => $this->getRequest()->getParam('use_massaction', false)
-        ));
-    }
+
 
     /**
      * Categories tree node (Ajax version)
@@ -35,9 +26,15 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
     public function categoriesJsonAction()
     {
         if ($categoryId = (int) $this->getRequest()->getPost('id')) {
-            $this->getResponse()->setBody(
-                $this->_getCategoryTreeBlock()->getCategoryChildrenJson($categoryId)
-            );
+            /** @var Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Categories $treeBlock */
+            $treeBlock = $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_categories');
+
+            $layeredlandingId = $this->getRequest()->getParam('layeredlanding_id');
+            $layeredlanding	= Mage::getModel('layeredlanding/layeredlanding')->load($layeredlandingId);
+            $treeBlock->setCategoryIds($layeredlanding->getCategoryId());
+
+
+            $this->getResponse()->setBody($treeBlock->getCategoryChildrenJson($categoryId));
         }
     }
    
