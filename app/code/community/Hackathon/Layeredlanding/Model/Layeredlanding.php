@@ -21,24 +21,24 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
 					->addFieldToFilter('layeredlanding_id', $this->getId());
 	}
 
+
+    /**
+     * @todo Loads a new model instance, should just add the data to the current model and be
+     *       moved to the resource model.
+     * @param $url
+     * @return $this
+     */
     public function loadByUrl($url)
     {
-        throw new Exception('todo');
-        $collection = $this->getCollection()
-            ->addFieldToSelect('layeredlanding_id')
-            ->addFieldToSelect('store_ids')
-            ->addFieldToFilter('page_url', array('eq' => $url));
+        /** @var Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection $layeredlandingCollection */
+        $layeredlandingCollection = $this->getCollection();
+        $layeredlandingCollection->addFieldToFilter('page_url', $url);
+        $layeredlandingCollection->addStoreFilter(Mage::app()->getStore());
+        $layeredlandingCollection->setPageSize(1);
 
-        if ($collection->getSize()) 
-		{
-			$store_ids = explode(',', $collection->getFirstItem()->getStoreIds());
-			if (in_array(Mage::app()->getStore()->getId(), $store_ids) || in_array('0', $store_ids)) // check if the item applies to the store or to system level
-			{
-				$this->load($collection->getFirstItem()->getId());
-			}
-        }
+        $layeredlandingCollection->walk('afterload');
 
-        return $this;
+        return $layeredlandingCollection->getFirstItem();
     }
 
     public function getUrl()

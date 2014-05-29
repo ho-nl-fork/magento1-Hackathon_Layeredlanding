@@ -2,7 +2,7 @@
 
 $list = $this->getPagesList();
 ?>
-<h4><?php echo $this->__('Landing {ages menu');?></h4>
+<h4><?php echo $this->__('Landing Pages menu');?></h4>
 <ul class="layeredlanding-leftnav">
 <?php foreach ($list as $item): ?>
 	<li><a href="<?php echo Mage::getBaseUrl() . trim($item->getData('page_url'), '/');?>" title="<?php echo $item->getData('page_title');?>"><?php echo $item->getData('page_title');?></a></li>

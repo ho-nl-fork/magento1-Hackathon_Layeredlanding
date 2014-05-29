@@ -8,6 +8,10 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding
         $this->_init('layeredlanding/layeredlanding', 'layeredlanding_id');
     }
 
+    public function loadByUrl(Mage_Core_Model_Abstract $object) {
+
+    }
+
     /**
      * Assign page to store views
      *

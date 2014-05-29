@@ -8,7 +8,7 @@ class Hackathon_Layeredlanding_Block_Leftnav extends Mage_Core_Block_Template
         $collection = Mage::getModel('layeredlanding/layeredlanding')->getCollection()
 			->addFieldToSelect('page_title')
 			->addFieldToSelect('page_url')
-            ->addStoreFilter();
+            ->addStoreFilter(Mage::app()->getStore());
 
 		return $collection;
 	}
