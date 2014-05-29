@@ -16,34 +16,30 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Design
 
         $fieldset->addField('display_layered_navigation', 'select', array(
 			'label' => Mage::helper('layeredlanding')->__('Display Layered Navigation'),
-			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'display_layered_navigation',
-			'values' => Mage::getSingleton('layeredlanding/options_boolean')->toOptionArray(),
+			'values' => Mage::getSingleton('adminhtml/system_config_source_yesno')->toOptionArray(),
 		));
 
         $fieldset->addField('display_in_top_navigation', 'select', array(
 			'label' => Mage::helper('layeredlanding')->__('Display in Top Navigation'),
-			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'display_in_top_navigation',
-			'values' => Mage::getSingleton('layeredlanding/options_boolean')->toOptionArray(),
+			'values' => Mage::getSingleton('adminhtml/system_config_source_yesno')->toOptionArray(),
 			'value' => '0',
 		));
 
         $fieldset->addField('custom_layout_template', 'select', array(
 			'label' => Mage::helper('layeredlanding')->__('Page Layout'),
-			'required' => false,
 			'name' => 'custom_layout_template',
-			'values' => Mage::getSingleton('layeredlanding/options_layout')->toOptionArray(),
+			'values' => Mage::getSingleton('catalog/category_attribute_source_layout')->getAllOptions(),
 		));
 
         $fieldset->addField('custom_layout_update', 'textarea', array(
-			'label' => Mage::helper('layeredlanding')->__('Custom Layout Update'),
-			'required' => false,
-			'name' => 'custom_layout_update',
-			'style' => "width:500px;",
-		));
+			'label'    => Mage::helper('layeredlanding')->__('Custom Layout Update'),
+            'name'     => 'custom_layout_update',
+            'style'    => 'height:24em;',
+        ));
 
         if (Mage::getSingleton('adminhtml/session')->getLayeredlandingData()) {
             $data = Mage::getSingleton('adminhtml/session')->getLayeredlandingData();

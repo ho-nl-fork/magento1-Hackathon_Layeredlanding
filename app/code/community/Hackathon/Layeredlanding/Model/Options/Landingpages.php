@@ -4,22 +4,22 @@ class Hackathon_Layeredlanding_Model_Options_Landingpages
 {
     public function toOptionArray()
     {
-        throw new Exception('todo store ids');
 		$collection = Mage::getModel('layeredlanding/layeredlanding')->getCollection()
 			->addFieldToSelect('layeredlanding_id')
-			->addFieldToSelect('store_ids')
 			->addFieldToSelect('page_title');
+        $collection->walk('afterload');
 		
 		$options = array();
-		foreach ($collection as $item)
-		{
+		foreach ($collection as $item) {
 			$stores = array();
-			foreach (explode(',', $item->getData('store_ids')) as $store)
-			{
+			foreach ($item->getData('store_id') as $store) {
 				$stores[] = Mage::app()->getStore($store)->getName();
 			}
-			
-			$options[] = array('value' => $item->getData('layeredlanding_id'), 'label' => $item->getData('page_title').' ('.implode(', ', $stores).')');
+
+			$options[] = array(
+                'value' => $item->getData('layeredlanding_id'),
+                'label' => $item->getData('page_title').' ('.implode(', ', $stores).')'
+            );
 		}
 		
 		return $options;
