@@ -12,14 +12,21 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
 	
 	public function setCategoryData($observer)
 	{
-		$landingpage = Mage::registry('current_landingpage');
-		if (is_null($landingpage)) return $this; // no landingpage available, return
-		
+		$landingpage = $this->_getLandingpage();
+
+		if (! $landingpage) {
+            return $this;
+        }
 		$category = $observer->getCategory();
 		$category->setData('name', $landingpage->getData('page_title'));
 		$category->setData('description', $landingpage->getData('page_description'));
 	}
 
+
+    /**
+     * Add data to head block and add breadcrumbs
+     * @param $observer
+     */
     public function coreBlockAbstractPrepareLayoutAfter($observer)
     {
         /** @var $block Mage_Catalog_Block_Category_View */
@@ -27,20 +34,26 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
 
         if ($block instanceof Mage_Catalog_Block_Category_View) {
             /** @var $landingpage Hackathon_Layeredlanding_Model_Layeredlanding */
-            $landingpage = Mage::registry('current_landingpage');
+            $landingpage = $this->_getLandingpage();
+            if (! $landingpage) {
+                return;
+            }
 
-            if ($landingpage) {
-                if ($headBlock = $block->getLayout()->getBlock('head')) {
-                    if ($title = $landingpage->getMetaTitle()) {
-                        $headBlock->setTitle($title);
-                    }
-                    if ($description = $landingpage->getMetaDescription()) {
-                        $headBlock->setDescription($description);
-                    }
-                    if ($keywords = $landingpage->getMetaKeywords()) {
-                        $headBlock->setKeywords($keywords);
-                    }
-                }
+            /** @var Mage_Page_Block_Html_Head $headBlock */
+            $headBlock = $block->getLayout()->getBlock('head');
+            if (! $headBlock) {
+                return;
+            }
+
+
+            if ($title = $landingpage->getMetaTitle()) {
+                $headBlock->setTitle($title);
+            }
+            if ($description = $landingpage->getMetaDescription()) {
+                $headBlock->setDescription($description);
+            }
+            if ($keywords = $landingpage->getMetaKeywords()) {
+                $headBlock->setKeywords($keywords);
             }
         }
         else if ($block instanceof Mage_Catalog_Block_Breadcrumbs) {
@@ -58,6 +71,12 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         }
     }
 
+
+    /**
+     * @todo move to model
+     * @param $observer
+     * @throws Exception
+     */
     public function layeredLandingSaveBefore($observer)
     {
         /** @var $obj Hackathon_Layeredlanding_Model_Layeredlanding */
@@ -128,12 +147,57 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         }
     }
 
+
+    /**
+     * @todo what does this do?
+     * @param $observer
+     */
     public function catalogControllerCategoryInitAfter($observer)
     {
-        $landingPage = Mage::registry('current_landingpage');
-        if ($landingPage) {
-            Mage::unregister('current_entity_key');
-            Mage::register('current_entity_key', 'landingpage-'.$landingPage->getId());
+        $landingpage = $this->_getLandingpage();
+        if (! $landingpage) {
+            return;
         }
+
+        Mage::unregister('current_entity_key');
+        Mage::register('current_entity_key', 'landingpage-'.$landingpage->getId());
+    }
+
+    protected function _getLandingpage() {
+        if ($landingPage = Mage::registry('current_landingpage')) {
+            return $landingPage;
+        }
+
+        $request = Mage::app()->getRequest();
+
+        $categoryId = $request->getParam('id');
+        if (! $categoryId) {
+            return null;
+        }
+
+        //Build query to select the correct layeredlanding collection for the current category
+        $layeredlandingCollection = Mage::getResourceModel('layeredlanding/layeredlanding_collection');
+        $layeredlandingCollection->addStoreFilter();
+        $layeredlandingCollection->addCategoryFilter($categoryId);
+        $layeredlandingCollection->setPageSize(1);
+
+        //@todo do we have this data cached somewhere, move somewhere?
+        $layeredAttributes = Mage::getResourceModel('catalog/product_attribute_collection');
+        $layeredAttributes->addIsFilterableFilter();
+        $select  = $layeredAttributes->getSelect()->reset('columns')->columns(array('attribute_id', 'attribute_code'));
+        $attributes = $layeredAttributes->getConnection()->fetchPairs($select);
+
+        foreach ($attributes as $attributeId => $attributeCode) {
+            //we also filter the NULL values, so that it filters strict enough
+            $value = $request->getParam($attributeCode, null);
+            $layeredlandingCollection->addAttributeFilter($attributeId, $value);
+        }
+        $layeredlandingCollection->walk('afterload');
+
+        /** @var Hackathon_Layeredlanding_Model_Layeredlanding $layeredlanding */
+        $layeredlanding = $layeredlandingCollection->getFirstItem();
+
+        Mage::registry('current_landingpage', $layeredlanding);
+        return $layeredlanding;
     }
 }
