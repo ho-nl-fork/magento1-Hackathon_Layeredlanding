@@ -7,6 +7,12 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
     {
         $this->_init('layeredlanding/layeredlanding');
     }
+
+    protected function _initSelect() {
+        parent::_initSelect();
+        $this->getSelect()->group('main_table.layeredlanding_id');
+        return $this;
+    }
 //
 //    /**
 //     * Perform operations after collection load
@@ -45,67 +51,83 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
 //
 //        return parent::_afterLoad();
 //    }
-
     /**
      * Add filter by store
      *
      * @param int|Mage_Core_Model_Store $store
-     * @param bool $withAdmin
-     * @return Mage_Cms_Model_Resource_Page_Collection
+     * @return $this
      */
-    public function addStoreFilter($store, $withAdmin = true)
+    public function addStoreFilter($store = null)
     {
-        if (!$this->getFlag('store_filter_added')) {
-            if ($store instanceof Mage_Core_Model_Store) {
-                $store = array($store->getId());
-            }
-
-            if (!is_array($store)) {
-                $store = array($store);
-            }
-
-            if ($withAdmin) {
-                $store[] = Mage_Core_Model_App::ADMIN_STORE_ID;
-            }
-
-            $this->addFilter('store_id', array('in' => $store), 'public');
+        if (is_null($store)) {
+            $store = Mage::app()->getStore();
         }
+
+        if ($store instanceof Mage_Core_Model_Store) {
+            $store = $store->getId();
+        }
+
+
+        $this->getSelect()->join(
+            array('store_table' => $this->getTable('layeredlanding/store')),
+            "`main_table`.`layeredlanding_id` = `store_table`.`layeredlanding_id` AND `store_table`.`store_id` = '$store'"
+        );
+
         return $this;
     }
 
-    /**
-     * Join store relation table if there is store filter
-     */
-    protected function _renderFiltersBefore()
-    {
-        if ($this->getFilter('store_id')) {
-            $this->getSelect()->join(
-                array('store_table' => $this->getTable('layeredlanding/store')),
-                'main_table.layeredlanding_id = store_table.layeredlanding_id',
-                array()
-            )->group('main_table.layeredlanding_id');
-
-            /*
-             * Allow analytic functions usage because of one field grouping
-             */
-            $this->_useAnalyticFunction = true;
-        }
-        return parent::_renderFiltersBefore();
-    }
-
 
     /**
-     * Get SQL for get record count.
-     * Extra GROUP BY strip added.
+     * Add filter by category
      *
-     * @return Varien_Db_Select
+     * @param Mage_Catalog_Model_Category|int $category
+     * @return $this
      */
-    public function getSelectCountSql()
+    public function addCategoryFilter($category)
     {
-        $countSelect = parent::getSelectCountSql();
+        if ($category instanceof Mage_Catalog_Model_Category) {
+            $category = $category->getId();
+        }
 
-        $countSelect->reset(Zend_Db_Select::GROUP);
+        $this->getSelect()->join(
+            array('category_table' => $this->getTable('layeredlanding/category')),
+            "`main_table`.`layeredlanding_id` = `category_table`.`layeredlanding_id` AND `category_table`.`category_id` = $category",
+            array()
+        );
 
-        return $countSelect;
+        return $this;
     }
+
+
+    /**
+     * Add filter by category
+     *
+     * @param $attribute
+     * @param $value
+     *
+     * @internal param int|\Mage_Catalog_Model_Category $category
+     * @return $this
+     */
+    public function addAttributeFilter($attribute, $value)
+    {
+        if ($attribute instanceof Mage_Eav_Model_attribute) {
+            $attribute = $attribute->getId();
+        }
+
+        $tableAlias = 'attr_'.$attribute;
+        $this->getSelect()->joinLeft(
+            array($tableAlias => $this->getTable('layeredlanding/attributes')),
+            "`main_table`.`layeredlanding_id` = `$tableAlias`.`layeredlanding_id` AND `$tableAlias`.`attribute_id` = $attribute",
+            array()
+        );
+
+        if (! is_null($value)) {
+            $this->getSelect()->where("`$tableAlias`.`value` = '$value'");
+        } else {
+            $this->getSelect()->where("`$tableAlias`.`value` IS NULL");
+        }
+
+        return $this;
+    }
+
 }
