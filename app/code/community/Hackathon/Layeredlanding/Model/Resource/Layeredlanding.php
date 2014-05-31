@@ -115,6 +115,9 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding
 
             $categories = $this->lookupCategoryIds($object->getId());
             $object->setData('category_id', $categories);
+
+            $attributes = $this->lookupAttributes($object->getId());
+            $object->setData('attributes', $attributes);
         }
 
         return parent::_afterLoad($object);
@@ -153,5 +156,23 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding
             ->where('layeredlanding_id = ?',(int)$layeredlandingId);
 
         return $adapter->fetchCol($select);
+    }
+
+
+    /**
+     * Get store ids to which specified item is assigned
+     *
+     * @param $layeredlandingId
+     * @return array
+     */
+    public function lookupAttributes($layeredlandingId)
+    {
+        $adapter = $this->_getReadAdapter();
+
+        $select  = $adapter->select()
+            ->from($this->getTable('layeredlanding/attributes'), array('attribute_id', 'value'))
+            ->where('layeredlanding_id = ?',(int)$layeredlandingId);
+
+        return $adapter->fetchPairs($select);
     }
 }
