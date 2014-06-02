@@ -1,5 +1,29 @@
 <?php
- 
+
+/**
+ * @method int getDisplayInTopNavigation()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setDisplayInTopNavigation(int $value)
+ * @method string getCustomLayoutUpdate()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setCustomLayoutUpdate(string $value)
+ * @method string getPageUrl()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setPageUrl(string $value)
+ * @method string getMetaDescription()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setMetaDescription(string $value)
+ * @method int getLayeredlandingId()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setLayeredlandingId(int $value)
+ * @method string getMetaKeywords()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setMetaKeywords(string $value)
+ * @method string getPageDescription()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setPageDescription(string $value)
+ * @method string getCustomLayoutTemplate()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setCustomLayoutTemplate(string $value)
+ * @method string getMetaTitle()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setMetaTitle(string $value)
+ * @method int getDisplayLayeredNavigation()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setDisplayLayeredNavigation(int $value)
+ * @method string getPageTitle()
+ * @method Hackathon_Layeredlanding_Model_Layeredlanding setPageTitle(string $value)
+ */
 class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abstract
 {
     /**
@@ -43,6 +67,6 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
 
     public function getUrl()
     {
-        return Mage::getUrl().$this->getPageUrl();
+        return Mage::getUrl($this->getPageUrl());
     }
 }

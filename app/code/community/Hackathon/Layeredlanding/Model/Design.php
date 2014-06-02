@@ -5,13 +5,15 @@ class Hackathon_Layeredlanding_Model_Design extends Mage_Catalog_Model_Design
     public function addLayoutHandleObserver(Varien_Event_Observer $observer)
     {
         $landingpage = Mage::registry('current_landingpage');
-		if (is_null($landingpage)) return $this; // no landingpage
+		if (! $landingpage) {
+            return $this;
+        }
 
-		$landingpage_id = $landingpage->getId();
+		$landingpageId = $landingpage->getId();
 
 		$layout = $observer->getAction()->getLayout();
 		$layout->getUpdate()->addHandle('layeredlanding_page');
-		$layout->getUpdate()->addHandle('layeredlanding_' . $landingpage_id);
+//		$layout->getUpdate()->addHandle('layeredlanding_' . $landingpageId);
 		$layout->generateXml();
 
 		return $this;
@@ -21,8 +23,7 @@ class Hackathon_Layeredlanding_Model_Design extends Mage_Catalog_Model_Design
     {
         $landingpage = Mage::registry('current_landingpage');
 
-		if (!is_null($landingpage))
-		{
+		if ($landingpage) {
 			$layout_update = $landingpage->getCustomLayoutUpdate();
 			$layout_template = $landingpage->getCustomLayoutTemplate();
 			$layout_laynav = (int)$landingpage->getDisplayLayeredNavigation();

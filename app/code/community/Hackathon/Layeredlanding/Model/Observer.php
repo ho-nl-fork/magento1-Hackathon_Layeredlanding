@@ -12,14 +12,23 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
 	
 	public function setCategoryData($observer)
 	{
+        /** @var Hackathon_Layeredlanding_Model_Layeredlanding $landingpage */
 		$landingpage = $this->_getLandingpage();
 
 		if (! $landingpage) {
             return $this;
         }
+
+        /** @var Mage_Catalog_Model_Category $category */
 		$category = $observer->getCategory();
-		$category->setData('name', $landingpage->getData('page_title'));
-		$category->setData('description', $landingpage->getData('page_description'));
+//        $category->setIsReadonly(true);
+		$category->setName($landingpage->getPageTitle());
+		$category->setDescription($landingpage->getPageDescription());
+        $category->setMetaTitle($landingpage->getMetaTitle());
+        $category->setMetaDescription($landingpage->getMetaDescription());
+        $category->setMetaKeywords($landingpage->getMetaKeywords());
+        var_dump($landingpage->getPageUrl());
+        $category->setRequestPath($landingpage->getPageUrl());
 	}
 
 
@@ -32,32 +41,7 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         /** @var $block Mage_Catalog_Block_Category_View */
         $block = $observer->getBlock();
 
-        if ($block instanceof Mage_Catalog_Block_Category_View) {
-            /** @var $landingpage Hackathon_Layeredlanding_Model_Layeredlanding */
-            $landingpage = $this->_getLandingpage();
-            if (! $landingpage) {
-                return;
-            }
-
-            /** @var Mage_Page_Block_Html_Head $headBlock */
-            $headBlock = $block->getLayout()->getBlock('head');
-            if (! $headBlock) {
-                return;
-            }
-
-
-            if ($title = $landingpage->getMetaTitle()) {
-                $headBlock->setTitle($title);
-            }
-            if ($description = $landingpage->getMetaDescription()) {
-                $headBlock->setDescription($description);
-            }
-            if ($keywords = $landingpage->getMetaKeywords()) {
-                $headBlock->setKeywords($keywords);
-            }
-        }
-        else if ($block instanceof Mage_Catalog_Block_Breadcrumbs) {
-
+        if ($block instanceof Mage_Catalog_Block_Breadcrumbs) {
             /** @var $landingpage Hackathon_Layeredlanding_Model_Layeredlanding */
             $landingpage = Mage::registry('current_landingpage');
 
@@ -163,8 +147,14 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         Mage::register('current_entity_key', 'landingpage-'.$landingpage->getId());
     }
 
+
+    /**
+     * @return Hackathon_Layeredlanding_Model_Layeredlanding|null
+     */
     protected function _getLandingpage() {
-        if ($landingPage = Mage::registry('current_landingpage')) {
+        $landingPage = Mage::registry('current_landingpage');
+
+        if (! is_null($landingPage)) {
             return $landingPage;
         }
 
@@ -192,12 +182,17 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
             $value = $request->getParam($attributeCode, null);
             $layeredlandingCollection->addAttributeFilter($attributeId, $value);
         }
-        $layeredlandingCollection->walk('afterload');
 
-        /** @var Hackathon_Layeredlanding_Model_Layeredlanding $layeredlanding */
-        $layeredlanding = $layeredlandingCollection->getFirstItem();
+        if ($layeredlandingCollection->count()) {
+            $layeredlandingCollection->walk('afterload');
 
-        Mage::registry('current_landingpage', $layeredlanding);
-        return $layeredlanding;
+            /** @var Hackathon_Layeredlanding_Model_Layeredlanding $layeredlanding */
+            $layeredlanding = $layeredlandingCollection->getFirstItem();
+            Mage::register('current_landingpage', $layeredlanding);
+        } else {
+            Mage::register('current_landingpage', false);
+        }
+
+        return Mage::registry('current_landingpage');
     }
 }
