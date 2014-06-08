@@ -22,12 +22,14 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Catalog_Model_Category $category */
 		$category = $observer->getCategory();
 //        $category->setIsReadonly(true);
+
+        $category->setOrigName($category->getName());
 		$category->setName($landingpage->getPageTitle());
 		$category->setDescription($landingpage->getPageDescription());
         $category->setMetaTitle($landingpage->getMetaTitle());
         $category->setMetaDescription($landingpage->getMetaDescription());
         $category->setMetaKeywords($landingpage->getMetaKeywords());
-        $category->setRequestPath($landingpage->getPageUrl());
+        $category->setLandingPage($landingpage);
 	}
 
 
@@ -44,13 +46,28 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
             /** @var $landingpage Hackathon_Layeredlanding_Model_Layeredlanding */
             $landingpage = Mage::registry('current_landingpage');
 
-            /** @var $breadcrumbsBlock Mage_Page_Block_Html_Breadcrumbs */
-            if (($breadcrumbsBlock = $block->getLayout()->getBlock('breadcrumbs')) && $landingpage) {
-                $breadcrumbsBlock->addCrumb($landingpage->getPageTitle(), array(
-                    'label' => $landingpage->getPageTitle()
-                ));
+            if (! $landingpage) {
+                return $this;
             }
 
+            /** @var $breadcrumbsBlock Mage_Page_Block_Html_Breadcrumbs */
+            $breadcrumbsBlock = $block->getLayout()->getBlock('breadcrumbs');
+
+            if (! $breadcrumbsBlock) {
+                return $this;
+            }
+
+            /** @var Mage_Catalog_Model_Category $currentCategory */
+            $currentCategory = Mage::registry('current_category');
+
+            $breadcrumbsBlock->addCrumb('category'.$currentCategory->getId(), array(
+                'label' => $currentCategory->getOrigName(),
+                'link'  => $currentCategory->getUrl()
+            ));
+
+            $breadcrumbsBlock->addCrumb($landingpage->getPageTitle(), array(
+                'label' => $landingpage->getPageTitle()
+            ));
         }
     }
 
