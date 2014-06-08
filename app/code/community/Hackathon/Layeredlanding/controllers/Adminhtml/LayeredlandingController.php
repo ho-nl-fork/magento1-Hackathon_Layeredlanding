@@ -77,6 +77,12 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 				$postData = $this->getRequest()->getPost();
 
                 $postData['category_id'] = explode(',', $postData['category_id']);
+                if (isset($postData['list_mode']) && in_array($postData['list_mode'], array('grid','list'))) {
+                    $key = sprintf('limit_%s', $postData['list_mode']);
+                    if (isset($postData[$key])) {
+                        $postData['limit'] = $postData[$key];
+                    }
+                }
 
                 /** @var Hackathon_Layeredlanding_Model_Layeredlanding $model */
 				$model = Mage::getModel('layeredlanding/layeredlanding');
@@ -86,6 +92,7 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
                         Mage::throwException(Mage::helper('layeredlanding')->__('Could not save Landing Page, does not exist'));
                     }
                 }
+
                 $model->addData($postData);
 				$model->save();
 				

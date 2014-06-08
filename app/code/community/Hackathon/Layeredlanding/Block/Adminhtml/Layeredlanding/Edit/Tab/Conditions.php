@@ -138,6 +138,9 @@ JS;
             $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_attributes')
         );
 
+        if (isset($data['list_mode'])) {
+            $data['limit_'.$data['list_mode']] = $data['limit'];
+        }
         $form->setValues($data);
 
         return parent::_prepareForm();
