@@ -40,6 +40,11 @@ class Hackathon_Layeredlanding_Controller_Router extends Mage_Core_Controller_Va
             $request->setParam($attr->getAttributeCode(), $attribute->getValue());
         }
 
+        $request->setParam('order', $landingPage->getSortBy());
+        $request->setParam('limit', $landingPage->getLimit());
+        $request->setParam('mode', $landingPage->getListMode());
+        $request->setParam('dir', $landingPage->getOrder());
+
         $controllerClassName = $this->_validateControllerClassName('Mage_Catalog', 'category');
         $controllerInstance = Mage::getControllerInstance($controllerClassName, $request, $this->getFront()->getResponse());
 
