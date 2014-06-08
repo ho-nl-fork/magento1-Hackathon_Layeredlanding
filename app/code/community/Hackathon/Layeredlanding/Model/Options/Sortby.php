@@ -12,4 +12,12 @@ class Hackathon_Layeredlanding_Model_Options_Sortby
         ));
         return $sortByOptions;
 	}
+
+    public function getOptionValues() {
+        $values = array();
+        foreach($this->getAllOptions() as $option) {
+            $values[] = $option['value'];
+        }
+        return $values;
+    }
 }

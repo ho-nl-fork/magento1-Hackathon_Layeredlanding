@@ -21,10 +21,16 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
 			'class' => 'fieldset-wide'
 		));
 
-        $fieldset->addField('sort_by', 'select', array(
-			'label' => Mage::helper('cms')->__('Sort By'),
+        $sortBy = $fieldset->addField('sort_by', 'select', array(
+			'label' => Mage::helper('catalog')->__('Sort By'),
             'values' => Mage::getSingleton('layeredlanding/options_sortby')->toOptionArray(),
 			'name' => 'sort_by',
+		));
+
+        $order = $fieldset->addField('order', 'select', array(
+			'label' => Mage::helper('catalog')->__('Order'),
+            'values' => Mage::getSingleton('layeredlanding/options_order')->toOptionArray(),
+			'name' => 'order',
 		));
 
         $listMode = $fieldset->addField('list_mode', 'select', array(
@@ -45,7 +51,6 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
 			'name' => 'limit_list',
 		));
 
-
         /** @var Mage_Adminhtml_Block_Widget_Form_Element_Dependence $formElementDependence */
         $formElementDependence = $this->getLayout()->createBlock('adminhtml/widget_form_element_dependence');
         $this->setChild('form_after', $formElementDependence);
@@ -53,6 +58,8 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
             ->addFieldMap($listMode->getHtmlId(), $listMode->getName())
             ->addFieldMap($limitGrid->getHtmlId(), $limitGrid->getName())
             ->addFieldMap($limitList->getHtmlId(), $limitList->getName())
+            ->addFieldMap($sortBy->getHtmlId(), $sortBy->getName())
+            ->addFieldMap($order->getHtmlId(), $order->getName())
             ->addFieldDependence(
                 $limitGrid->getName(),
                 $listMode->getName(),
@@ -62,6 +69,11 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
                 $limitList->getName(),
                 $listMode->getName(),
                 'list'
+            )
+            ->addFieldDependence(
+                $order->getName(),
+                $sortBy->getName(),
+                Mage::getSingleton('layeredlanding/options_sortby')->getOptionValues()
             );
 
 
