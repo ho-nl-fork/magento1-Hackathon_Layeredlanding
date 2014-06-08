@@ -29,20 +29,36 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Grid extends Mage_
             'index'     => 'layeredlanding_id',
         ));
  
-        $this->addColumn('title', array(
-            'header'    => Mage::helper('layeredlanding')->__('Title'),
+        $this->addColumn('page_title', array(
+            'header'    => Mage::helper('cms')->__('Content Heading'),
             'align'     => 'left',
             'index'     => 'page_title',
+        ));
+
+        $this->addColumn('page_url', array(
+            'header'    => Mage::helper('cms')->__('URL Key'),
+            'align'     => 'left',
+            'index'     => 'page_url',
         ));
 
         $this->addColumn('category_id', array(
             'header'    => Mage::helper('layeredlanding')->__('Categories'),
             'align'     => 'left',
             'index'     => 'category_id',
-            'width'     => '200px',
+            'width'     => '',
             'filter'    => false,
             'sortable'  => false,
 			'renderer'  => 'layeredlanding/adminhtml_layeredlanding_grid_renderer_category',
+        ));
+
+        $this->addColumn('attributes', array(
+            'header'    => Mage::helper('layeredlanding')->__('Attributes'),
+            'align'     => 'left',
+            'index'     => 'attributes',
+            'width'     => '200px',
+            'filter'    => false,
+            'sortable'  => false,
+			'renderer'  => 'layeredlanding/adminhtml_layeredlanding_grid_renderer_attributes',
         ));
 
         if (!Mage::app()->isSingleStoreMode()) {
