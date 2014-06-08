@@ -21,6 +21,50 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
 			'class' => 'fieldset-wide'
 		));
 
+        $fieldset->addField('sort_by', 'select', array(
+			'label' => Mage::helper('cms')->__('Sort By'),
+            'values' => Mage::getSingleton('layeredlanding/options_sortby')->toOptionArray(),
+			'name' => 'sort_by',
+		));
+
+        $listMode = $fieldset->addField('list_mode', 'select', array(
+			'label' => Mage::helper('catalog')->__('List Mode'),
+            'values' => Mage::getSingleton('layeredlanding/options_listMode')->toOptionArray(),
+			'name' => 'list_mode',
+		));
+
+        $limitGrid = $fieldset->addField('limit_grid', 'select', array(
+			'label' => Mage::helper('catalog')->__('Limit'),
+            'values' => Mage::getSingleton('layeredlanding/options_limit')->toOptionArray('grid'),
+			'name' => 'limit_grid',
+		));
+
+        $limitList = $fieldset->addField('limit_list', 'select', array(
+			'label' => Mage::helper('catalog')->__('Limit'),
+            'values' => Mage::getSingleton('layeredlanding/options_limit')->toOptionArray('list'),
+			'name' => 'limit_list',
+		));
+
+
+        /** @var Mage_Adminhtml_Block_Widget_Form_Element_Dependence $formElementDependence */
+        $formElementDependence = $this->getLayout()->createBlock('adminhtml/widget_form_element_dependence');
+        $this->setChild('form_after', $formElementDependence);
+        $formElementDependence
+            ->addFieldMap($listMode->getHtmlId(), $listMode->getName())
+            ->addFieldMap($limitGrid->getHtmlId(), $limitGrid->getName())
+            ->addFieldMap($limitList->getHtmlId(), $limitList->getName())
+            ->addFieldDependence(
+                $limitGrid->getName(),
+                $listMode->getName(),
+                'grid'
+            )
+            ->addFieldDependence(
+                $limitList->getName(),
+                $listMode->getName(),
+                'list'
+            );
+
+
         /** @var Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Renderer_Categories $categoriesRenderer */
         $categoriesRenderer = $this->getLayout()->createBlock('layeredlanding/adminhtml_layeredlanding_edit_renderer_categories');
 
