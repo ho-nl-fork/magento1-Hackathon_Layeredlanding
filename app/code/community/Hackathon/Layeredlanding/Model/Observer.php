@@ -37,29 +37,27 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
      * Add data to head block and add breadcrumbs
      * @param $observer
      */
-    public function coreBlockAbstractPrepareLayoutAfter($observer)
+    public function controllerActionLayoutGenerateBlocksAfter($observer)
     {
-        /** @var $block Mage_Catalog_Block_Category_View */
-        $block = $observer->getBlock();
+        /* @var $layout Mage_Core_Model_Layout */
+        $layout = $observer->getEvent()->getData('layout');
 
-        if ($block instanceof Mage_Catalog_Block_Breadcrumbs) {
-            /** @var $landingpage Hackathon_Layeredlanding_Model_Layeredlanding */
-            $landingpage = Mage::registry('current_landingpage');
+        if ($breadcrumbsBlock = $layout->getBlock('breadcrumbs')) {
+            /** @var $breadcrumbsBlock Mage_Page_Block_Html_Breadcrumbs */
 
-            if (! $landingpage) {
+            if (! $breadcrumbsBlock) {
                 return $this;
             }
 
-            /** @var $breadcrumbsBlock Mage_Page_Block_Html_Breadcrumbs */
-            $breadcrumbsBlock = $block->getLayout()->getBlock('breadcrumbs');
-
-            if (! $breadcrumbsBlock) {
+            $landingpage = $this->_getLandingpage();
+            if (! $landingpage) {
                 return $this;
             }
 
             /** @var Mage_Catalog_Model_Category $currentCategory */
             $currentCategory = Mage::registry('current_category');
 
+            //rewrite the category crumb, so it has a url.
             $breadcrumbsBlock->addCrumb('category'.$currentCategory->getId(), array(
                 'label' => $currentCategory->getOrigName(),
                 'link'  => $currentCategory->getUrl()
@@ -69,6 +67,44 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
                 'label' => $landingpage->getPageTitle()
             ));
         }
+
+        if ($head = $layout->getBlock('head')) {
+            /** @var $head Mage_Page_Block_Html_Head */
+
+            $landingpage = $this->_getLandingpage();
+            if (! $landingpage) {
+                return $this;
+            }
+
+            $this->_removeHeadItemsByType($head, 'link_rel', 'rel="canonical"');
+            $head->addLinkRel('canonical', $landingpage->getUrl());
+        }
+    }
+
+
+    /**
+     * @param Mage_Page_Block_Html_Head $head
+     * @param string $type
+     * @param bool|string $params
+     */
+    protected function _removeHeadItemsByType($head, $type, $params = false) {
+        $data = $head->getData();
+        $data = isset($data['items']) ? $data['items'] : array();
+        foreach (array_keys($data) as $key) {
+            if ((strpos($key, $type.'/') === 0)) {
+                if ($params) {
+                    if (isset($data[$key]['params'])) {
+                        if ($params == $data[$key]['params']) {
+                            unset($data[$key]);
+                        }
+                    }
+                }
+                else {
+                    unset($data[$key]);
+                }
+            }
+        }
+        $head->setData('items', $data);
     }
 
 

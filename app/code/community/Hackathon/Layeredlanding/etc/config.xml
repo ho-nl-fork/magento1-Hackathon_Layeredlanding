@@ -98,15 +98,6 @@
                     </layeredlanding>
                 </observers>
             </controller_action_layout_load_before>
-            <core_block_abstract_prepare_layout_after>
-                <observers>
-                    <layeredlanding>
-                        <type>singleton</type>
-                        <class>layeredlanding/observer</class>
-                        <method>coreBlockAbstractPrepareLayoutAfter</method>
-                    </layeredlanding>
-                </observers>
-            </core_block_abstract_prepare_layout_after>
         </events>
     </global>
     <frontend>
@@ -154,6 +145,15 @@
                     </layeredlanding>
                 </observers>
             </catalog_controller_category_init_after>
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <layeredlanding>
+                        <type>singleton</type>
+                        <class>layeredlanding/observer</class>
+                        <method>controllerActionLayoutGenerateBlocksAfter</method>
+                    </layeredlanding>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
         </events>
     </frontend>
     <admin>
