@@ -72,41 +72,6 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
     }
 
 
-    /**
-     * @todo move to model
-     * @param $observer
-     * @throws Exception
-     */
-    public function layeredLandingSaveBefore($observer)
-    {
-        /** @var $obj Hackathon_Layeredlanding_Model_Layeredlanding */
-        $obj = $observer->getDataObject();
-
-        if ($url = $obj->getPageUrl()) {
-            $collection = Mage::getModel('core/url_rewrite')
-                ->getCollection()
-                ->addFieldToFilter('request_path', array('eq' => $url));
-
-            if ($collection->getSize() > 0) {
-                throw new Exception("Url already used by product or category");
-            }
-
-            $collection = Mage::getModel('cms/page')
-                ->getCollection()
-                ->addFieldToFilter('identifier', array('eq' => str_replace('.html', '', $url)));
-
-            if ($collection->getSize() > 0) {
-                throw new Exception("Url already used by CMS page");
-            }
-        }
-    }
-
-    public function layeredLandingSaveAfter($observer)
-    {
-        $cache = Mage::app()->getCache();
-        $cache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('TOPMENU'));
-    }
-
     public function pageBlockHtmlTopmenuGethtmlBefore($observer)
     {
         /** @var $menu Varien_Data_Tree_Node */

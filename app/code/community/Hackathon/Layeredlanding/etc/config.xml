@@ -168,26 +168,6 @@
         </routers>
     </admin>
     <adminhtml>
-        <events>
-            <layered_landing_save_before>
-                <observers>
-                    <layeredlanding>
-                        <type>singleton</type>
-                        <class>layeredlanding/observer</class>
-                        <method>layeredLandingSaveBefore</method>
-                    </layeredlanding>
-                </observers>
-            </layered_landing_save_before>
-            <layered_landing_save_after>
-                <observers>
-                    <layeredlanding>
-                        <type>singleton</type>
-                        <class>layeredlanding/observer</class>
-                        <method>layeredLandingSaveAfter</method>
-                    </layeredlanding>
-                </observers>
-            </layered_landing_save_after>
-        </events>
         <layout>
             <updates>
                 <layeredlanding>

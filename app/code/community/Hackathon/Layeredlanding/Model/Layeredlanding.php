@@ -41,6 +41,7 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
      */
     protected $_eventPrefix = 'layered_landing';
 
+
     public function _construct()
     {
         parent::_construct();
@@ -52,6 +53,39 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
 		return Mage::getModel('layeredlanding/attributes')->getCollection()
 					->addFieldToFilter('layeredlanding_id', $this->getId());
 	}
+
+    protected function _beforeSave() {
+        if ($url = $this->getPageUrl()) {
+            $collection = Mage::getModel('core/url_rewrite')
+                ->getCollection()
+                ->addFieldToFilter('request_path', array('eq' => $url));
+
+            if ($collection->getSize() > 0) {
+                Mage::throwException(Mage::helper('layeredlanding')->__("URL-Key already used by product or category"));
+            }
+
+            $collection = Mage::getModel('cms/page')
+                ->getCollection()
+                ->addFieldToFilter('identifier', array('eq' => str_replace('.html', '', $url)));
+
+            if ($collection->getSize() > 0) {
+                Mage::throwException(Mage::helper('layeredlanding')->__("URL-key already used by CMS page"));
+            }
+        }
+
+        return parent::_beforeSave();
+    }
+
+
+    /**
+     * @todo add check if
+     * @return Mage_Core_Model_Abstract|void
+     */
+    protected function _afterSave() {
+        parent::_afterSave();
+        $cache = Mage::app()->getCache();
+        $cache->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('TOPMENU'));
+    }
 
 
     /**
