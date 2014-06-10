@@ -8,49 +8,17 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
         $this->_init('layeredlanding/layeredlanding');
     }
 
-    protected function _initSelect() {
+
+    /**
+     * @return $this
+     */
+    protected function _initSelect()
+    {
         parent::_initSelect();
         $this->getSelect()->group('main_table.layeredlanding_id');
         return $this;
     }
-//
-//    /**
-//     * Perform operations after collection load
-//     *
-//     * @return Mage_Cms_Model_Resource_Page_Collection
-//     */
-//    protected function _afterLoad()
-//    {
-//        if ($this->_previewFlag) {
-//            $items = $this->getColumnValues('page_id');
-//            $connection = $this->getConnection();
-//            if (count($items)) {
-//                $select = $connection->select()
-//                        ->from(array('cps'=>$this->getTable('cms/page_store')))
-//                        ->where('cps.page_id IN (?)', $items);
-//
-//                if ($result = $connection->fetchPairs($select)) {
-//                    foreach ($this as $item) {
-//                        if (!isset($result[$item->getData('page_id')])) {
-//                            continue;
-//                        }
-//                        if ($result[$item->getData('page_id')] == 0) {
-//                            $stores = Mage::app()->getStores(false, true);
-//                            $storeId = current($stores)->getId();
-//                            $storeCode = key($stores);
-//                        } else {
-//                            $storeId = $result[$item->getData('page_id')];
-//                            $storeCode = Mage::app()->getStore($storeId)->getCode();
-//                        }
-//                        $item->setData('_first_store_id', $storeId);
-//                        $item->setData('store_code', $storeCode);
-//                    }
-//                }
-//            }
-//        }
-//
-//        return parent::_afterLoad();
-//    }
+
     /**
      * Add filter by store
      *
@@ -100,6 +68,23 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
 
 
     /**
+     * @return $this
+     */
+    public function addDisplayLayeredNavigationFilter() {
+        $this->addFieldToFilter('display_layered_navigation', array('eq' => 1));
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addDisplayInTopNavigationFilter() {
+        $this->addFieldToFilter('display_in_top_navigation', array('eq' => 1));
+        return $this;
+    }
+
+
+    /**
      * Add filter by category
      *
      * @param $attribute
@@ -127,6 +112,65 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
             $this->getSelect()->where("`$tableAlias`.`value` IS NULL");
         }
 
+        return $this;
+    }
+
+    /**
+     * @param $sortBy
+     * @return $this
+     */
+    public function addSortByFilter($sortBy)
+    {
+        if (is_null($sortBy)) {
+            $this->addFieldToFilter('`main_table`.`sort_by`', array('null' => true));
+        } else {
+            $this->addFieldToFilter('`main_table`.`sort_by`', array(array('null' => true), array('eq' => $sortBy)));
+        }
+        return $this;
+    }
+
+
+    /**
+     * @param $limit
+     * @return $this
+     */
+    public function addLimitFilter($limit)
+    {
+        if (is_null($limit)) {
+            $this->addFieldToFilter('`main_table`.`limit`', array('null' => true));
+        } else {
+            $this->addFieldToFilter('`main_table`.`limit`', array(array('null' => true), array('eq' => $limit)));
+        }
+        return $this;
+    }
+
+
+    /**
+     * @param $mode
+     * @return $this
+     */
+    public function addListModeFilter($mode)
+    {
+        if (is_null($mode)) {
+            $this->addFieldToFilter('`main_table`.`list_mode`', array('null' => true));
+        } else {
+            $this->addFieldToFilter('`main_table`.`list_mode`', array(array('null' => true), array('eq' => $mode)));
+        }
+        return $this;
+    }
+
+
+    /**
+     * @param $order
+     * @return $this
+     */
+    public function addOrderFilter($order)
+    {
+        if (is_null($order)) {
+            $this->addFieldToFilter('`main_table`.`order`', array('null' => true));
+        } else {
+            $this->addFieldToFilter('`main_table`.`order`', array(array('null' => true), array('eq' => $order)));
+        }
         return $this;
     }
 

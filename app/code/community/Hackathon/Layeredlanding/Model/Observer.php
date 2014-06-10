@@ -77,8 +77,7 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         /** @var $menu Varien_Data_Tree_Node */
         $menu = $observer->getMenu();
 
-        $collection = Mage::getModel('layeredlanding/layeredlanding')
-            ->getCollection()
+        $collection = Mage::getModel('layeredlanding/layeredlanding')->getCollection()
             ->addFieldToFilter('display_in_top_navigation', 1)
             ->addStoreFilter();
 
@@ -132,25 +131,45 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
     /**
      * @return Hackathon_Layeredlanding_Model_Layeredlanding|null
      */
-    protected function _getLandingpage() {
+    protected function _getLandingpage()
+    {
         $landingPage = Mage::registry('current_landingpage');
 
         if (! is_null($landingPage)) {
             return $landingPage;
         }
 
-        $request = Mage::app()->getRequest();
-
-        $categoryId = $request->getParam('id');
+        $categoryId = Mage::app()->getRequest()->getParam('id');
         if (! $categoryId) {
             return null;
         }
 
-        //Build query to select the correct layeredlanding collection for the current category
+        $layeredlandingCollection = $this->_loadLandingPage();
+        Mage::register('current_landingpage', $layeredlandingCollection);
+
+        return Mage::registry('current_landingpage');
+    }
+
+
+    protected function _loadLandingPage() {
+        $request = Mage::app()->getRequest();
+
+        /** @var Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection $layeredlandingCollection */
         $layeredlandingCollection = Mage::getResourceModel('layeredlanding/layeredlanding_collection');
-        $layeredlandingCollection->addStoreFilter();
-        $layeredlandingCollection->addCategoryFilter($categoryId);
-        $layeredlandingCollection->setPageSize(1);
+        $layeredlandingCollection
+            ->addDisplayLayeredNavigationFilter()
+            ->addStoreFilter()
+            ->addCategoryFilter($request->getParam('id'))
+            ->setPageSize(1);
+
+        /** @var Mage_Catalog_Block_Product_List_Toolbar $toolbar */
+        $toolbar = Mage::app()->getLayout()->createBlock('catalog/product_list_toolbar');
+
+        $layeredlandingCollection
+            ->addSortByFilter($toolbar->getCurrentOrder())
+            ->addLimitFilter($toolbar->getLimit())
+            ->addListModeFilter($toolbar->getCurrentMode())
+            ->addOrderFilter($toolbar->getCurrentDirection());
 
         //@todo do we have this data cached somewhere, move somewhere?
         $layeredAttributes = Mage::getResourceModel('catalog/product_attribute_collection');
@@ -167,13 +186,9 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         if ($layeredlandingCollection->count()) {
             $layeredlandingCollection->walk('afterload');
 
-            /** @var Hackathon_Layeredlanding_Model_Layeredlanding $layeredlanding */
-            $layeredlanding = $layeredlandingCollection->getFirstItem();
-            Mage::register('current_landingpage', $layeredlanding);
+            return $layeredlandingCollection->getFirstItem();
         } else {
-            Mage::register('current_landingpage', false);
+            return false;
         }
-
-        return Mage::registry('current_landingpage');
     }
 }
