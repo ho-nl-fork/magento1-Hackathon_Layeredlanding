@@ -4,6 +4,11 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Form extends 
 {
     protected function _prepareForm()
     {
+        parent::_prepareForm();
+        if (Mage::getSingleton('cms/wysiwyg_config')->isEnabled()) {
+            $this->getLayout()->getBlock('head')->setCanLoadTinyMce(true);
+        }
+
         $form = new Varien_Data_Form(array(
 			'id' => 'edit_form',
 			'action' => $this->getUrl('*/*/save', array('id' => $this->getRequest()->getParam('id'))),
@@ -13,6 +18,6 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Form extends 
  
         $form->setUseContainer(true);
         $this->setForm($form);
-        return parent::_prepareForm();
+        return $this;
     }
 }
