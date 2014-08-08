@@ -79,7 +79,7 @@ foreach ($layeredlandingCollection as $layeredlanding) {
 
     $storeIds = $layeredlanding->getStoreIds() ?: $allStoreIds;
     if ($storeIds) {
-        $storeIdArray = explode(',', $storeIds);
+        $storeIdArray = is_array($storeIds) ? $storeIds : explode(',', $storeIds);
         foreach ($storeIdArray as $storeId) {
             $storeData[] = array('layeredlanding_id' => (int) $layeredlandingId, 'store_id' => (int) $storeId);
         }
