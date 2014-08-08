@@ -119,6 +119,7 @@ JS;
 				'title' => Mage::helper('cms')->__('Store View'),
 				'required' => true,
 				'values' => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
+				'value' => $data['store_id'],
 				'onchange' => '_estimate_product_count();',
 			));
 			
@@ -127,10 +128,11 @@ JS;
         } else {
             $fieldset->addField('store_id', 'hidden', array(
 				'name' => 'store_id',
-				'value' => Mage::app()->getStore(true)->getId(),
+				'value' => Mage::app()->getStore()->getId(),
 				'onchange' => '_estimate_product_count();',
 			));
         }
+        unset($data['store_id']);
 
         $fieldset->addField('attributes', 'text', array(
 			'name' => 'attributes',
