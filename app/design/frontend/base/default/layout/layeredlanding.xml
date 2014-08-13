@@ -5,11 +5,11 @@
             <block type="layeredlanding/leftnav" name="layeredlanding.leftnav" after="-" template="layeredlanding/leftnav.phtml"/>
         </reference>
     </layeredlanding_page>
-    <default>
-        <reference name="catalog.topnav">
-            <action method="addCacheTag">
-                <value>TOPMENU</value>
-            </action>
-        </reference>
-    </default>
+    <!--<default>-->
+        <!--<reference name="catalog.topnav">-->
+            <!--<action method="addCacheTag">-->
+                <!--<value>TOPMENU</value>-->
+            <!--</action>-->
+        <!--</reference>-->
+    <!--</default>-->
 </layout>
