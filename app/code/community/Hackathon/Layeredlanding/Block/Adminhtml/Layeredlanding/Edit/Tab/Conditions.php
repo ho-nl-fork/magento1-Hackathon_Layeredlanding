@@ -119,7 +119,7 @@ JS;
 				'title' => Mage::helper('cms')->__('Store View'),
 				'required' => true,
 				'values' => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
-				'value' => $data['store_id'],
+				'value' => isset($data['store_id']) ? $data['store_id'] : array() ,
 				'onchange' => '_estimate_product_count();',
 			));
 			
