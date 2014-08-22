@@ -25,14 +25,20 @@ class Hackathon_Layeredlanding_Controller_Router extends Mage_Core_Controller_Va
 		Mage::app()->getStore()->setConfig(Mage_Catalog_Helper_Category::XML_PATH_USE_CATEGORY_CANONICAL_TAG, 0); // disable canonical tag
 
         $categoryIds = $landingPage->getCategoryId();
-        $firstCategory = reset($categoryIds);
+        $categoryId = 0;
+        $rootId = Mage::app()->getStore()->getRootCategoryId();
+        foreach ($categoryIds as $categoryId) {
+            if ($categoryId != $rootId) {
+                break;
+            }
+        }
 
         // if successfully gained url parameters, use them and dispatch ActionController action
         $request->setRouteName('catalog')
             ->setModuleName('catalog')
             ->setControllerName('category')
             ->setActionName('view')
-            ->setParam('id', $firstCategory);
+            ->setParam('id', $categoryId);
 
         /** @var $attribute Hackathon_Layeredlanding_Model_Attributes */
         foreach ($landingPage->getAttributes() as $attribute) {
