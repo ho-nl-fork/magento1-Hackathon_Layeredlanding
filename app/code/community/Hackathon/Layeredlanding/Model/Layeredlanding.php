@@ -55,7 +55,9 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
 	}
 
     protected function _beforeSave() {
+        $this->_preparePageUrl();
         if ($url = $this->getPageUrl()) {
+
             $collection = Mage::getModel('core/url_rewrite')
                 ->getCollection()
                 ->addFieldToFilter('request_path', array('eq' => $url));
@@ -74,6 +76,25 @@ class Hackathon_Layeredlanding_Model_Layeredlanding extends Mage_Core_Model_Abst
         }
 
         return parent::_beforeSave();
+    }
+
+    protected function _preparePageUrl() {
+        $url = $this->getPageUrl();
+        if (($pos = strpos($url, '.')) !== false) {
+            $suffix = substr($url, strpos($url, '.'));
+            $url = substr($url, 0, $pos);
+        } else {
+            $suffix = '';
+        };
+
+        $urlParts = explode('/', $url);
+        $category = Mage::getSingleton('catalog/category');
+        foreach ($urlParts as $key => $part) {
+            $urlParts[$key] = $category->formatUrlKey($part);
+        }
+        $url = implode('/', $urlParts).$suffix;
+
+        $this->setPageUrl($url);
     }
 
 
