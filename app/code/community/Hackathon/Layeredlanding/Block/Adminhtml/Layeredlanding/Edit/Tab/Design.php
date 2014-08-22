@@ -47,6 +47,9 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Design
         } elseif (Mage::registry('layeredlanding_data')) {
             $data = Mage::registry('layeredlanding_data')->getData();
         }
+        if (! count($data)) {
+            $data['display_layered_navigation'] = 1;
+        }
 
         $form->setValues($data);
 
