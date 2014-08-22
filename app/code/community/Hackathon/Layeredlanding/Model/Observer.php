@@ -37,10 +37,15 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
      * Add data to head block and add breadcrumbs
      * @param $observer
      */
-    public function controllerActionLayoutGenerateBlocksAfter($observer)
+    public function controllerActionLayoutRenderBeforeCatalogCategoryView($observer)
     {
+        $landingpage = $this->_getLandingpage();
+        if (! $landingpage) {
+            return;
+        }
+
         /* @var $layout Mage_Core_Model_Layout */
-        $layout = $observer->getEvent()->getData('layout');
+        $layout = Mage::app()->getLayout();
 
         if ($breadcrumbsBlock = $layout->getBlock('breadcrumbs')) {
             /** @var $breadcrumbsBlock Mage_Page_Block_Html_Breadcrumbs */
@@ -76,6 +81,7 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
                 return $this;
             }
 
+            $head->setRobots('INDEX, FOLLOW');
             $this->_removeHeadItemsByType($head, 'link_rel', 'rel="canonical"');
             $head->addLinkRel('canonical', $landingpage->getUrl());
         }
@@ -145,22 +151,6 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
                 }
             }
         }
-    }
-
-
-    /**
-     * @todo what does this do?
-     * @param $observer
-     */
-    public function catalogControllerCategoryInitAfter($observer)
-    {
-        $landingpage = $this->_getLandingpage();
-        if (! $landingpage) {
-            return;
-        }
-
-        Mage::unregister('current_entity_key');
-        Mage::register('current_entity_key', 'landingpage-'.$landingpage->getId());
     }
 
 
