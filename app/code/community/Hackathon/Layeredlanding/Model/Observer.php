@@ -24,12 +24,12 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
 //        $category->setIsReadonly(true);
 
         $category->setOrigName($category->getName());
-		$category->setName($landingpage->getPageTitle());
-		$category->setDescription($landingpage->getPageDescription());
+        $category->setName($landingpage->getPageTitle());
+        $category->setDescription($landingpage->getPageDescription());
         $category->setMetaTitle($landingpage->getMetaTitle());
         $category->setMetaDescription($landingpage->getMetaDescription());
         $category->setMetaKeywords($landingpage->getMetaKeywords());
-        $category->setLandingPage($landingpage);
+        $category->setLayeredlandingPage($landingpage);
 	}
 
 
