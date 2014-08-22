@@ -2,7 +2,7 @@
  
 class Hackathon_Layeredlanding_Model_Options_ListMode
 {
-    public function toOptionArray($mode = 'grid') {
+    public function toOptionArray() {
         $options = array(
             array('value' => '',   'label' => Mage::helper('layeredlanding')->__('-- Allow any --')),
             array('value'=>'grid', 'label' => Mage::helper('adminhtml')->__('Grid Mode')),

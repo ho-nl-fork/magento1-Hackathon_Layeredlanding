@@ -18,8 +18,19 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
 		
         $fieldset = $form->addFieldset('layeredlanding_form', array(
 			'legend' => Mage::helper('layeredlanding')->__('Landing Page Conditions'),
-			'class' => 'fieldset-wide'
 		));
+
+        $pageType = $fieldset->addField('page_type', 'select', array(
+            'label' => Mage::helper('layeredlanding')->__('Page Type'),
+            'values' => Mage::getSingleton('layeredlanding/options_pagetype')->toOptionArray(),
+            'name' => 'page_type',
+            'value' => Hackathon_Layeredlanding_Model_Options_Pagetype::TYPE_CATEGORY
+        ));
+
+        $keyword = $fieldset->addField('search_query', 'text', array(
+            'label' => Mage::helper('layeredlanding')->__('Search Query'),
+            'name' => 'search_query',
+        ));
 
         $sortBy = $fieldset->addField('sort_by', 'select', array(
 			'label' => Mage::helper('catalog')->__('Sort By'),
@@ -60,6 +71,8 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
             ->addFieldMap($limitList->getHtmlId(), $limitList->getName())
             ->addFieldMap($sortBy->getHtmlId(), $sortBy->getName())
             ->addFieldMap($order->getHtmlId(), $order->getName())
+            ->addFieldMap($pageType->getHtmlId(), $pageType->getName())
+            ->addFieldMap($keyword->getHtmlId(), $keyword->getName())
             ->addFieldDependence(
                 $limitGrid->getName(),
                 $listMode->getName(),
@@ -69,6 +82,11 @@ class Hackathon_Layeredlanding_Block_Adminhtml_Layeredlanding_Edit_Tab_Condition
                 $limitList->getName(),
                 $listMode->getName(),
                 'list'
+            )
+            ->addFieldDependence(
+                $keyword->getName(),
+                $pageType->getName(),
+                Hackathon_Layeredlanding_Model_Options_Pagetype::TYPE_SEARCH
             )
             ->addFieldDependence(
                 $order->getName(),

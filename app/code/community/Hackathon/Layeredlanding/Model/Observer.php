@@ -21,7 +21,6 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
 
         /** @var Mage_Catalog_Model_Category $category */
 		$category = $observer->getCategory();
-//        $category->setIsReadonly(true);
 
         $category->setOrigName($category->getName());
         $category->setName($landingpage->getPageTitle());
@@ -30,14 +29,17 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
         $category->setMetaDescription($landingpage->getMetaDescription());
         $category->setMetaKeywords($landingpage->getMetaKeywords());
         $category->setLayeredlandingPage($landingpage);
+
+        return $this;
 	}
 
 
     /**
      * Add data to head block and add breadcrumbs
-     * @param $observer
+     * @param Varien_Event_Observer $observer
+     * @return $this
      */
-    public function controllerActionLayoutRenderBeforeCatalogCategoryView($observer)
+    public function controllerActionLayoutRenderBeforeCatalogCategoryView(Varien_Event_Observer $observer)
     {
         $landingpage = $this->_getLandingpage();
         if (! $landingpage) {
