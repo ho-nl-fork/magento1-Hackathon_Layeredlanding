@@ -38,7 +38,8 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
 
         $this->getSelect()->join(
             array('store_table' => $this->getTable('layeredlanding/store')),
-            "`main_table`.`layeredlanding_id` = `store_table`.`layeredlanding_id` AND `store_table`.`store_id` = '$store'"
+            "`main_table`.`layeredlanding_id` = `store_table`.`layeredlanding_id` AND `store_table`.`store_id` = '$store'",
+            array()
         );
 
         return $this;

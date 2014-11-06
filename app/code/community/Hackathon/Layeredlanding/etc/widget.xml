@@ -22,4 +22,77 @@
             </class>
         </parameters>
     </layeredlanding_link>
+    <layeredlanding_list type="layeredlanding/widget_list">
+        <name>Layered landingpage list</name>
+        <description type="desc">Creates a dynamic list of links to layered landing pages</description>
+
+        <js>mage/adminhtml/first.js,mage/adminhtml/second.js</js>
+
+        <parameters>
+            <title translate="label">
+                <required>0</required>
+                <visible>1</visible>
+                <label>Title</label>
+                <type>text</type>
+            </title>
+            <show_all>
+                <visible>1</visible>
+                <label>Show all</label>
+                <type>select</type>
+                <source_model>adminhtml/system_config_source_yesno</source_model>
+            </show_all>
+            <landingpage_ids translate="label">
+                <depends><show_all><value>0</value></show_all></depends>
+                <required>1</required>
+                <visible>1</visible>
+                <label>Selected pages</label>
+                <type>multiselect</type>
+                <source_model>layeredlanding/options_landingpages</source_model>
+            </landingpage_ids>
+            <template translate="label">
+                <label>Template</label>
+                <visible>1</visible>
+                <type>select</type>
+                <value>layeredlanding/widget/list.phtml</value>
+                <values>
+                    <default translate="label" module="layeredlanding">
+                        <value>layeredlanding/widget/list.phtml</value>
+                        <label>Default (list)</label>
+                    </default>
+                </values>
+            </template>
+
+            <row_group type="complex" translate="label description" module="ho_bootstrap">
+                <label>Grid row number</label>
+                <visible>1</visible>
+                <type>select</type>
+                <sort_order>400</sort_order>
+                <value>1</value>
+                <source_model>ho_bootstrap/adminhtml_system_config_source_gridrows</source_model>
+                <helper_block>
+                    <type>ho_bootstrap/widget_adminhtml_widget_instance_edit_depend_block</type>
+                </helper_block>
+            </row_group>
+
+            <css_class translate="label description" module="ho_bootstrap">
+                <label>CSS grid class</label>
+                <visible>1</visible>
+                <type>multiselect</type>
+                <source_model>ho_bootstrap/adminhtml_system_config_source_gridoptions</source_model>
+                <sort_order>410</sort_order>
+                <description>Select multiple values by holding ⌘ on OS X and ctrl on windows.</description>
+                <helper_block>
+                    <type>ho_bootstrap/widget_adminhtml_widget_instance_edit_depend_block</type>
+                </helper_block>
+            </css_class>
+
+            <css_panel_class translate="label" module="ho_bootstrap">
+                <label>CSS panel class</label>
+                <visible>1</visible>
+                <type>select</type>
+                <sort_order>390</sort_order>
+                <source_model>ho_bootstrap/adminhtml_system_config_source_panel</source_model>
+            </css_panel_class>
+        </parameters>
+    </layeredlanding_list>
 </widgets>
