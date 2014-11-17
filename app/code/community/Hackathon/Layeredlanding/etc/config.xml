@@ -117,6 +117,15 @@
                 </layeredlanding>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <layeredlanding>
+                    <files>
+                        <default>Hackathon_LayeredLanding.csv</default>
+                    </files>
+                </layeredlanding>
+            </modules>
+        </translate>
         <events>
             <catalog_category_load_after>
                 <observers>
@@ -166,6 +175,15 @@
                 </layeredlanding>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <layeredlanding>
+                    <files>
+                        <default>Hackathon_LayeredLanding.csv</default>
+                    </files>
+                </layeredlanding>
+            </modules>
+        </translate>
     </adminhtml>
     <default>
         <web>

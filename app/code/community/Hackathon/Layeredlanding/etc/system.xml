@@ -3,15 +3,15 @@
     <sections>
         <sitemap module="sitemap">
             <groups>
-                <landing translate="label">
-                    <label>Landing Page Options</label>
+                <landing translate="label" module="layeredlanding">
+                    <label>Attribute Landing Page Options</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-                        <changefreq translate="label">
+                        <changefreq translate="label" module="sitemap">
                             <label>Frequency</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_frequency</source_model>
@@ -20,7 +20,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </changefreq>
-                        <priority translate="label comment">
+                        <priority translate="label comment" module="sitemap">
                             <label>Priority</label>
                             <frontend_type>text</frontend_type>
                             <backend_model>adminhtml/system_config_backend_sitemap</backend_model>
@@ -38,7 +38,7 @@
             <groups>
                 <seo>
                     <fields>
-                        <layeredlanding_canonical_tag translate="label">
+                        <layeredlanding_canonical_tag translate="label" module="layeredlanding">
                             <label>Use Canonical Link Meta Tag For Layered Landing</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>

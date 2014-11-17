@@ -3,9 +3,6 @@
     <layeredlanding_link type="layeredlanding/widget_link">
         <name>Layered landingpage link</name>
         <description type="desc">Creates a dynamic link to a layered landing page</description>
-		
-        <js>mage/adminhtml/first.js,mage/adminhtml/second.js</js>
-		
 		<parameters>
             <landingpage translate="label">
                 <required>1</required>
@@ -25,9 +22,6 @@
     <layeredlanding_list type="layeredlanding/widget_list">
         <name>Layered landingpage list</name>
         <description type="desc">Creates a dynamic list of links to layered landing pages</description>
-
-        <js>mage/adminhtml/first.js,mage/adminhtml/second.js</js>
-
         <parameters>
             <title translate="label">
                 <required>0</required>

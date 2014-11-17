@@ -9,11 +9,11 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
             ->_setActiveMenu('system/tools')
             ->_addBreadcrumb($this->__('Catalog'), $this->__('Catalog'))
             ->_addBreadcrumb($this->__('Attributes'), $this->__('Attributes'))
-			->_addBreadcrumb(Mage::helper('layeredlanding')->__('Landing {age Manager'), Mage::helper('layeredlanding')->__('Landingpage Manager'));
+			->_addBreadcrumb(Mage::helper('layeredlanding')->__('Attribute Landing Pages'), Mage::helper('layeredlanding')->__('Attribute Landing Pages'));
 
         $this->_title($this->__('Catalog'))
              ->_title($this->__('Attributes'))
-             ->_title(Mage::helper('layeredlanding')->__('Landing Page Manager'));
+             ->_title(Mage::helper('layeredlanding')->__('Attribute Landing Pages'));
 
 		return $this;
 	}
