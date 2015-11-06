@@ -241,4 +241,8 @@ class Hackathon_Layeredlanding_Adminhtml_LayeredlandingController extends Mage_A
 		}
     }
 
+    function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/layeredlanding');
+    }
 }
