@@ -106,9 +106,10 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
             "`main_table`.`layeredlanding_id` = `$tableAlias`.`layeredlanding_id` AND `$tableAlias`.`attribute_id` = $attribute",
             array()
         );
+        $conn = $this->getConnection();
 
         if (! is_null($value)) {
-            $this->getSelect()->where("`$tableAlias`.`value` = '$value'");
+            $this->getSelect()->where($conn->quoteInto("`$tableAlias`.`value` = ?", $value));
         } else {
             $this->getSelect()->where("`$tableAlias`.`value` IS NULL");
         }
