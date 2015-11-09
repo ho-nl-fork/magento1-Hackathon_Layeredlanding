@@ -19,7 +19,7 @@ class Hackathon_Layeredlanding_Block_Widget_List
 
         if (! $this->getShowAll()) {
             $collection->addFieldToFilter(
-                '`main_table`.`layeredlanding_id`',
+                'main_table.layeredlanding_id',
                 array('in' => explode(',', $this->getLandingpageIds()))
             );
         }

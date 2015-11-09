@@ -124,9 +124,9 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
     public function addSortByFilter($sortBy)
     {
         if (is_null($sortBy)) {
-            $this->addFieldToFilter('`main_table`.`sort_by`', array('null' => true));
+            $this->addFieldToFilter('main_table.sort_by', array('null' => true));
         } else {
-            $this->addFieldToFilter('`main_table`.`sort_by`', array(array('null' => true), array('eq' => $sortBy)));
+            $this->addFieldToFilter('main_table.sort_by', array(array('null' => true), array('eq' => $sortBy)));
         }
         return $this;
     }
@@ -139,9 +139,9 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
     public function addLimitFilter($limit)
     {
         if (is_null($limit)) {
-            $this->addFieldToFilter('`main_table`.`limit`', array('null' => true));
+            $this->addFieldToFilter('main_table.limit', array('null' => true));
         } else {
-            $this->addFieldToFilter('`main_table`.`limit`', array(array('null' => true), array('eq' => $limit)));
+            $this->addFieldToFilter('main_table.limit', array(array('null' => true), array('eq' => $limit)));
         }
         return $this;
     }
@@ -154,9 +154,9 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
     public function addListModeFilter($mode)
     {
         if (is_null($mode)) {
-            $this->addFieldToFilter('`main_table`.`list_mode`', array('null' => true));
+            $this->addFieldToFilter('main_table.list_mode', array('null' => true));
         } else {
-            $this->addFieldToFilter('`main_table`.`list_mode`', array(array('null' => true), array('eq' => $mode)));
+            $this->addFieldToFilter('main_table.list_mode', array(array('null' => true), array('eq' => $mode)));
         }
         return $this;
     }
@@ -169,9 +169,9 @@ class Hackathon_Layeredlanding_Model_Resource_Layeredlanding_Collection
     public function addOrderFilter($order)
     {
         if (is_null($order)) {
-            $this->addFieldToFilter('`main_table`.`order`', array('null' => true));
+            $this->addFieldToFilter('main_table.order', array('null' => true));
         } else {
-            $this->addFieldToFilter('`main_table`.`order`', array(array('null' => true), array('eq' => $order)));
+            $this->addFieldToFilter('main_table.order', array(array('null' => true), array('eq' => $order)));
         }
         return $this;
     }
