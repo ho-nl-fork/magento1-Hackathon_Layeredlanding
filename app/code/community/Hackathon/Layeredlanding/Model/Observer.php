@@ -83,7 +83,14 @@ class Hackathon_Layeredlanding_Model_Observer extends Mage_Core_Model_Abstract
 
             $head->setRobots('INDEX, FOLLOW');
             $this->_removeHeadItemsByType($head, 'link_rel', 'rel="canonical"');
-            $head->addLinkRel('canonical', $landingpage->getUrl());
+
+            $transport = new Varien_Object([
+                'landing_page' => $landingpage,
+                'canonical' => $landingpage->getUrl()
+            ]);
+            Mage::dispatchEvent('ho_layeredlanding_get_canonical', [ 'transport' => $transport ]);
+
+            $head->addLinkRel('canonical', $transport->getData('canonical'));
         }
     }
 

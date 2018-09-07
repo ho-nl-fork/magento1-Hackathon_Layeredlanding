@@ -16,6 +16,12 @@ Landingpages can be added under `Catalog > Attributes > Attributes Landing Pages
 ### Sitemap
 Sitemap settings can be changed under `System > Configuration > Google Sitemap > Landingpage options`
 
+## Events
+
+### ho_layeredlanding_get_canonical
+
+Dispatched with a transport object allowing augmentation of the canonical URL.
+
 ## Todo
 - CSV import for landingpages
 - Try to minimalize overwrites
